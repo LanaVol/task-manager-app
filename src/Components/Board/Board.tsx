@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Paper, Box, Typography, IconButton, Button } from "@mui/material";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
-import { BoardItem, CardItem } from "../../Interfaces/DataTypes";
+import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
@@ -80,7 +80,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           </Box>
         </Box>
         <Box sx={{ padding: "20px" }}>
-          {board.cards.map((card) => (
+          {board?.cards?.map((card) => (
             <Card
               card={card}
               key={card.id}

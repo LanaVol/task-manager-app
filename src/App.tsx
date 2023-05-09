@@ -1,8 +1,8 @@
 import React from "react";
 
 import "./App.css";
-import { Header } from "./Components/Header/Header";
-import { TaskBoard } from "./Pages/Taskboard/Taskboard";
+import { Header } from "./components/Header/Header";
+import { TaskBoard } from "./pages/Taskboard/Taskboard";
 
 function App() {
   return (

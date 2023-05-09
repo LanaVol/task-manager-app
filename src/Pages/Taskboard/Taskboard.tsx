@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Board } from "../../Components/Board/Board";
-import { CustomInput } from "../../Components/CustomInput/CustomInput";
-import { Stack, Button, Box } from "@mui/material";
-import { BoardItem, CardItem } from "../../Interfaces/DataTypes";
-// import { AxiosServices } from "../../AxiosServices/AxiosServices";
-import {
-  setBoardList,
-  updateLocaleStorageBoards,
-} from "../../AxiosServices/LocalStorageServices";
+import { Board } from "../../components/Board/Board";
+import { CustomInput } from "../../components/CustomInput/CustomInput";
+import { Stack, Box } from "@mui/material";
+import { BoardItem, CardItem } from "../../interfaces/DataTypes";
+
 import imageBg from "../../image/2.png";
+import TaskService from "../../services/TaskService";
 
 export const TaskBoard = () => {
   const [boards, setBoards] = useState<BoardItem[]>([]);
-  // const { loading, error, tasks } = AxiosServices();
 
   useEffect(() => {
-    setData();
+    async function fetch() {
+      const { data } = await TaskService.getBoards();
+      if (data) {
+        setBoards(data[0].boards);
+      }
+    }
+    fetch();
   }, []);
-
-  async function setData() {
-    const boards: BoardItem[] = await setBoardList();
-    setBoards(boards);
-  }
 
   const [targetCard, setTargetCard] = useState({
     boardId: 0,
@@ -29,33 +26,41 @@ export const TaskBoard = () => {
   });
 
   // adding new board
-  const addBoardHandler = (boardTitle: string) => {
-    const boardList = [...boards];
-    boardList.push({
-      id: Date.now() + Math.random() * 10,
+  const addBoardHandler = async (boardTitle: string) => {
+    const { data } = await TaskService.addBoard({
       title: boardTitle,
       cards: [],
     });
-    setBoards(boardList);
-    console.log("@@2", boardList);
+    if (data) {
+      setBoards([...boards, data]);
+    }
+    // const boardList = [...boards];
+    // boardList.push({
+    //   id: Date.now() + Math.random() * 10,
+    //   title: boardTitle,
+    //   cards: [],
+    // });
+    // setBoards(boardList);
   };
 
   // remove current board
-  const removeBoard = (boardId: number) => {
-    const boardIndex = boards.findIndex((el: BoardItem) => {
-      return el.id === boardId;
-    });
-    if (boardIndex < 0) {
-      return;
-    }
-    const tempBoardList = [...boards];
-    tempBoardList.splice(boardIndex, 1);
-    setBoards(tempBoardList);
+  const removeBoard = async (boardId: number) => {
+    const { data } = await TaskService.deleteBoard(boardId);
+    const updatedBoardList = boards.filter((board) => board.id !== data);
+    setBoards(updatedBoardList);
+    // const boardIndex = boards.findIndex((el: BoardItem) => {
+    //   return el.id === boardId;
+    // });
+    // if (boardIndex < 0) {
+    //   return;
+    // }
+    // const tempBoardList = [...boards];
+    // tempBoardList.splice(boardIndex, 1);
+    // setBoards(tempBoardList);
   };
 
   // adding new card to current board
-  const addCardHandler = (boardId: number, cardTitle: string) => {
-    console.log(boards);
+  const addCardHandler = async (boardId: number, cardTitle: string) => {
     const boardIndex = boards.findIndex((el: BoardItem) => {
       return el.id === boardId;
     });
@@ -70,109 +75,112 @@ export const TaskBoard = () => {
       date: "",
       tasks: [],
     });
-    setBoards(tempBoardList);
+    const { data } = await TaskService.updateBoard({
+      boardId,
+      board: tempBoardList[boardIndex],
+    });
+
+    const updatedListBoard = boards.map((el) => {
+      if (el.id === data.id) {
+        el = data;
+      }
+      return el;
+    });
+    setBoards(updatedListBoard);
   };
 
   // remove current card
   const removeCard = (boardId: number, cardId: number) => {
-    const boardIndex = boards.findIndex((el: BoardItem) => {
-      return el.id === boardId;
-    });
-    if (boardIndex < 0) {
-      return;
-    }
-    const tempBoardList = [...boards];
-    const cards = tempBoardList[boardIndex].cards;
-    const cardIndex = cards.findIndex((el) => el.id === cardId);
-    if (cardIndex < 0) {
-      return;
-    }
-    cards.splice(cardIndex, 1);
-    setBoards(tempBoardList);
+    // const boardIndex = boards.findIndex((el: BoardItem) => {
+    //   return el.id === boardId;
+    // });
+    // if (boardIndex < 0) {
+    //   return;
+    // }
+    // const tempBoardList = [...boards];
+    // const cards = tempBoardList[boardIndex].cards;
+    // const cardIndex = cards.findIndex((el) => el.id === cardId);
+    // if (cardIndex < 0) {
+    //   return;
+    // }
+    // cards.splice(cardIndex, 1);
+    // setBoards(tempBoardList);
   };
 
   // update current card
   const updateCard = (boardId: number, cardId: number, card: CardItem) => {
-    const boardIndex = boards.findIndex((el) => {
-      return el.id === boardId;
-    });
-    if (boardIndex < 0) {
-      return;
-    }
-    const tempBoardList = [...boards];
-    const cards = tempBoardList[boardIndex].cards;
-
-    const cardIndex = cards.findIndex((el) => {
-      return el.id === cardId;
-    });
-    if (cardIndex < 0) {
-      return;
-    }
-
-    tempBoardList[boardIndex].cards[cardIndex] = card;
-    setBoards(tempBoardList);
+    // const boardIndex = boards.findIndex((el) => {
+    //   return el.id === boardId;
+    // });
+    // if (boardIndex < 0) {
+    //   return;
+    // }
+    // const tempBoardList = [...boards];
+    // const cards = tempBoardList[boardIndex].cards;
+    // const cardIndex = cards.findIndex((el) => {
+    //   return el.id === cardId;
+    // });
+    // if (cardIndex < 0) {
+    //   return;
+    // }
+    // tempBoardList[boardIndex].cards[cardIndex] = card;
+    // setBoards(tempBoardList);
   };
 
   // drag&drop cards
   const onDragEnd = (boardId: number, cardId: number) => {
     // console.log("dragEnd");
-    const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
-      return el.id === boardId;
-    });
-    if (sourceBoardIndex < 0) {
-      return;
-    }
-
-    const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex(
-      (el: CardItem) => {
-        return el.id === cardId;
-      }
-    );
-    if (sourceCardIndex < 0) {
-      return;
-    }
-
-    const targetBoardIndex = boards.findIndex((el: BoardItem) => {
-      return el.id === targetCard.boardId;
-    });
-    if (targetBoardIndex < 0) {
-      return;
-    }
-
-    const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
-      (el: CardItem) => {
-        return el.id === targetCard.cardId;
-      }
-    );
-
-    if (targetCardIndex < 0) {
-      return;
-    }
-
-    const tempBoardList = [...boards];
-    const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
-    tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
-    tempBoardList[targetBoardIndex].cards.splice(
-      targetCardIndex,
-      0,
-      sourceCard
-    );
-    setBoards(tempBoardList);
-
-    setTargetCard({ boardId: 0, cardId: 0 });
+    // const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
+    //   return el.id === boardId;
+    // });
+    // if (sourceBoardIndex < 0) {
+    //   return;
+    // }
+    // const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex(
+    //   (el: CardItem) => {
+    //     return el.id === cardId;
+    //   }
+    // );
+    // if (sourceCardIndex < 0) {
+    //   return;
+    // }
+    // const targetBoardIndex = boards.findIndex((el: BoardItem) => {
+    //   return el.id === targetCard.boardId;
+    // });
+    // if (targetBoardIndex < 0) {
+    //   return;
+    // }
+    // const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
+    //   (el: CardItem) => {
+    //     return el.id === targetCard.cardId;
+    //   }
+    // );
+    // if (targetCardIndex < 0) {
+    //   return;
+    // }
+    // const tempBoardList = [...boards];
+    // const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
+    // tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
+    // tempBoardList[targetBoardIndex].cards.splice(
+    //   targetCardIndex,
+    //   0,
+    //   sourceCard
+    // );
+    // setBoards(tempBoardList);
+    // setTargetCard({ boardId: 0, cardId: 0 });
   };
 
   const onDragEnter = (boardId: number, cardId: number) => {
     // console.log("dragEnter");
-    if (targetCard.cardId === cardId) {
-      return;
-    }
-    setTargetCard({ boardId: boardId, cardId: cardId });
+    // if (targetCard.cardId === cardId) {
+    //   return;
+    // }
+    // setTargetCard({ boardId: boardId, cardId: cardId });
   };
 
-  useEffect(() => {
-    updateLocaleStorageBoards(boards);
-  }, [boards]);
+  // useEffect(() => {
+  //   updateLocaleStorageBoards(boards);
+  // }, [boards]);
 
   return (
     <Box

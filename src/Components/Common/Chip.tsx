@@ -1,5 +1,5 @@
 import React from "react";
-import { LabelItem } from "../../Interfaces/DataTypes";
+import { LabelItem } from "../../interfaces/DataTypes";
 
 import { Close as Close } from "@mui/icons-material";
 

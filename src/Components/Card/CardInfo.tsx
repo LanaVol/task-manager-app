@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { CardItem, LabelItem, TaskItem } from "../../Interfaces/DataTypes";
+import { CardItem, LabelItem, TaskItem } from "../../interfaces/DataTypes";
 import { Modal } from "../Modal/Modal";
 import {
   Box,
@@ -22,7 +22,7 @@ import {
   Bookmark as Bookmark,
 } from "@mui/icons-material/";
 import { DateCalendar } from "../Calendar/Calendar";
-import { colorList } from "../../Data/dataUtility";
+import { colorList } from "../../data/dataUtility";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Chip } from "../Common/Chip";
 

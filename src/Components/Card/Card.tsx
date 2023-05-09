@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CardItem } from "../../Interfaces/DataTypes";
+import { CardItem } from "../../interfaces/DataTypes";
 import { CardInfo } from "./CardInfo";
 import { Dropdown } from "../Dropdown/Dropdown";
 import { Chip } from "../Common/Chip";

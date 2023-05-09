@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AxiosError } from "axios";
-import { BoardItem } from "..//Interfaces/DataTypes";
+import { BoardItem } from "../interfaces/DataTypes";
 
 export function AxiosServices() {
   const [tasks, setTasks] = useState<BoardItem[]>([]);

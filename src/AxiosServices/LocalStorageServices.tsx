@@ -1,5 +1,5 @@
-import { ApiTask } from "../Data/dataApi";
-import { BoardItem } from "../Interfaces/DataTypes";
+import { ApiTask } from "../data/dataApi";
+import { BoardItem } from "../interfaces/DataTypes";
 
 const LocalStorageKeyName = "task-board";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { BoardItem } from "../Interfaces/DataTypes";
+import { BoardItem } from "../interfaces/DataTypes";
 
 export const ApiTask: BoardItem[] = [
   {
