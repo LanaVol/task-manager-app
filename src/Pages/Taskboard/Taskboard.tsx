@@ -34,13 +34,6 @@ export const TaskBoard = () => {
     if (data) {
       setBoards([...boards, data]);
     }
-    // const boardList = [...boards];
-    // boardList.push({
-    //   id: Date.now() + Math.random() * 10,
-    //   title: boardTitle,
-    //   cards: [],
-    // });
-    // setBoards(boardList);
   };
 
   // remove current board
@@ -48,15 +41,6 @@ export const TaskBoard = () => {
     const { data } = await TaskService.deleteBoard(boardId);
     const updatedBoardList = boards.filter((board) => board.id !== data);
     setBoards(updatedBoardList);
-    // const boardIndex = boards.findIndex((el: BoardItem) => {
-    //   return el.id === boardId;
-    // });
-    // if (boardIndex < 0) {
-    //   return;
-    // }
-    // const tempBoardList = [...boards];
-    // tempBoardList.splice(boardIndex, 1);
-    // setBoards(tempBoardList);
   };
 
   // adding new card to current board
@@ -90,46 +74,71 @@ export const TaskBoard = () => {
   };
 
   // remove current card
-  const removeCard = (boardId: number, cardId: number) => {
-    // const boardIndex = boards.findIndex((el: BoardItem) => {
-    //   return el.id === boardId;
-    // });
-    // if (boardIndex < 0) {
-    //   return;
-    // }
-    // const tempBoardList = [...boards];
-    // const cards = tempBoardList[boardIndex].cards;
-    // const cardIndex = cards.findIndex((el) => el.id === cardId);
-    // if (cardIndex < 0) {
-    //   return;
-    // }
-    // cards.splice(cardIndex, 1);
-    // setBoards(tempBoardList);
+  const removeCard = async (boardId: number, cardId: number) => {
+    const boardIndex = boards.findIndex((el: BoardItem) => {
+      return el.id === boardId;
+    });
+    if (boardIndex < 0) {
+      return;
+    }
+
+    const updatedBoard = { ...boards[boardIndex] };
+
+    updatedBoard.cards = updatedBoard.cards.filter(
+      (card) => card.id !== cardId
+    );
+
+    const { data } = await TaskService.updateBoard({
+      boardId,
+      board: updatedBoard,
+    });
+
+    const updatedListBoard = boards.map((el) => {
+      if (el.id === data.id) {
+        el = data;
+      }
+      return el;
+    });
+    setBoards(updatedListBoard);
   };
 
   // update current card
-  const updateCard = (boardId: number, cardId: number, card: CardItem) => {
-    // const boardIndex = boards.findIndex((el) => {
-    //   return el.id === boardId;
-    // });
-    // if (boardIndex < 0) {
-    //   return;
-    // }
-    // const tempBoardList = [...boards];
-    // const cards = tempBoardList[boardIndex].cards;
-    // const cardIndex = cards.findIndex((el) => {
-    //   return el.id === cardId;
-    // });
-    // if (cardIndex < 0) {
-    //   return;
-    // }
-    // tempBoardList[boardIndex].cards[cardIndex] = card;
-    // setBoards(tempBoardList);
+  const updateCard = async (
+    boardId: number,
+    cardId: number,
+    card: CardItem
+  ) => {
+    const boardIndex = boards.findIndex((el) => {
+      return el.id === boardId;
+    });
+    if (boardIndex < 0) {
+      return;
+    }
+    const updatedBoard = { ...boards[boardIndex] };
+    const cards = updatedBoard.cards;
+    const cardIndex = cards.findIndex((el) => {
+      return el.id === cardId;
+    });
+    if (cardIndex < 0) {
+      return;
+    }
+    updatedBoard.cards[cardIndex] = card;
+
+    const { data } = await TaskService.updateBoard({
+      boardId,
+      board: updatedBoard,
+    });
+    const updatedListBoard = boards.map((el) => {
+      if (el.id === data.id) {
+        el = data;
+      }
+      return el;
+    });
+    setBoards(updatedListBoard);
   };
 
   // drag&drop cards
   const onDragEnd = (boardId: number, cardId: number) => {
-    // console.log("dragEnd");
     // const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
     //   return el.id === boardId;
     // });

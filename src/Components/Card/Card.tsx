@@ -48,6 +48,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           updateCard={updateCard}
         />
       )}
+
       <Stack
         key={card.id}
         draggable
@@ -72,18 +73,15 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
         </Box>
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="subtitle1" gutterBottom>
-            {title}
-          </Typography>
-          <IconButton aria-label="menu">
-            <LinearScaleIcon fontSize="medium" color="info" />
-          </IconButton>
           <Box
             onClick={(e) => {
               e.stopPropagation();
               setShowDropdown(true);
             }}
           >
+            <IconButton aria-label="menu">
+              <LinearScaleIcon fontSize="medium" color="info" />
+            </IconButton>
             {showDropdown && (
               <Dropdown
                 onClose={() => {
@@ -98,6 +96,9 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           </Box>
         </Box>
 
+        <Typography variant="subtitle1" gutterBottom>
+          {title}
+        </Typography>
         <Typography variant="subtitle2" gutterBottom>
           {date}
         </Typography>
