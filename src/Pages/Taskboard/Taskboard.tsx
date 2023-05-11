@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { Stack, Box } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 
 import imageBg from "../../image/2.png";
@@ -13,6 +14,8 @@ export const TaskBoard = () => {
     boardId: 0,
     cardId: 0,
   });
+  const matches = useMediaQuery("(min-width:600px)");
+  console.log("@matches", matches);
 
   useEffect(() => {
     async function fetch() {
@@ -200,23 +203,31 @@ export const TaskBoard = () => {
 
   return (
     <Box
+      // обгортка для бордів і кнопки AddBoard
       minHeight="70vh"
-      display="flex"
-      flexWrap="wrap"
-      justifyContent="space-between"
-      alignItems="start"
       sx={{
+        display: "flex",
+        alignItems: matches ? "start" : "center",
+        flexDirection: matches ? "row" : "column",
+
+        justifyContent: matches ? "space-between" : "center",
         padding: "20px 30px",
-        gap: "10px",
+        // flexWrap: "wrap",
+
+        gap: "20px",
         backgroundImage: `url(${imageBg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
     >
       <Stack
+        sx={{
+          width: matches ? "90%" : "100%",
+          justifyContent: matches ? "space-between" : "center",
+        }}
         direction="row"
         spacing={2}
-        justifyContent="space-between"
+        gap="10px"
         flexWrap="wrap"
       >
         {/* {loading && <Box>Loading page...</Box>} */}

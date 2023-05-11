@@ -5,6 +5,7 @@ import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface BoardProps {
   board: BoardItem;
@@ -27,14 +28,16 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     onDragEnter,
   } = props;
   const [showDropdown, setShowDropdown] = useState(false);
+  const matches = useMediaQuery("(min-width:600px)");
 
   return (
     <Paper
       elevation={2}
       sx={{
-        // padding: "20px",
         backgroundColor: "#ECF5FF",
-        minWidth: "180px",
+        width: matches ? "fit-content" : "100%",
+
+        minWidth: "200px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -79,7 +82,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             )}
           </Box>
         </Box>
-        <Box sx={{ padding: "20px" }}>
+        <Box sx={{ padding: "7px 15px", maxWidth: "300px" }}>
           {board?.cards?.map((card) => (
             <Card
               card={card}

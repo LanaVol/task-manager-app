@@ -11,7 +11,10 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import {
+  LinearScale as LinearScaleIcon,
+  PlaylistAddCheck as PlaylistAddCheckSharp,
+} from "@mui/icons-material";
 
 interface CardProps {
   card: CardItem;
@@ -36,6 +39,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
       sx={{
         padding: "20px",
         marginBottom: "10px",
+        // backgroundColor: matches ? "red" : "blue",
       }}
     >
       {showCardInfo && (
@@ -72,7 +76,21 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           ))}
         </Box>
 
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box
+          sx={{
+            border: "1px solid red",
+            borderRadius: "10px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              {title}
+            </Typography>
+          </Box>
+
           <Box
             onClick={(e) => {
               e.stopPropagation();
@@ -96,13 +114,11 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           </Box>
         </Box>
 
-        <Typography variant="subtitle1" gutterBottom>
-          {title}
-        </Typography>
         <Typography variant="subtitle2" gutterBottom>
           {date}
         </Typography>
-        <Box>
+        <Box display="flex" gap="10px">
+          <PlaylistAddCheckSharp />
           {tasks && tasks?.length > 0 ? (
             <Box>
               {`${tasks?.filter((el) => el.completed)?.length}/${

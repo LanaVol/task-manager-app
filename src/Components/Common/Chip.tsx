@@ -10,7 +10,6 @@ interface ChipProps {
 
 export const Chip = (props: ChipProps) => {
   const { el, removeLabel } = props;
-  console.log("@", el);
 
   return (
     <label
