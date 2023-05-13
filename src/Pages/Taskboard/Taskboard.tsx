@@ -9,7 +9,7 @@ import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import imageBg from "../../image/2.png";
 import TaskService from "../../services/TaskService";
 
-export const TaskBoard = () => {
+export const TaskBoard = ({ mode }: any) => {
   const [boards, setBoards] = useState<BoardItem[]>([]);
   const [targetCard, setTargetCard] = useState({
     boardId: 0,

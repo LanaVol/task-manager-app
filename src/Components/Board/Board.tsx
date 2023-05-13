@@ -35,7 +35,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       elevation={2}
       sx={{
         // backgroundColor: "#ECF5FF",
-        backgroundColor: "secondary",
+        bcground: "secondary",
         width: matches ? "fit-content" : "100%",
 
         minWidth: "200px",
@@ -68,7 +68,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
                 setShowDropdown(!showDropdown);
               }}
             >
-              <LinearScaleIcon fontSize="medium" color="info" />
+              <LinearScaleIcon fontSize="medium" color="secondary" />
             </IconButton>
             {showDropdown && (
               <Dropdown onClose={() => setShowDropdown(false)}>

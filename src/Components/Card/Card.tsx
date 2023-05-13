@@ -35,11 +35,10 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
 
   return (
     <Paper
-      elevation={2}
+      elevation={5}
       sx={{
         padding: "20px",
         marginBottom: "10px",
-        // backgroundColor: matches ? "red" : "blue",
       }}
     >
       {showCardInfo && (
@@ -98,7 +97,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             }}
           >
             <IconButton aria-label="menu">
-              <LinearScaleIcon fontSize="medium" color="info" />
+              <LinearScaleIcon fontSize="medium" color="secondary" />
             </IconButton>
             {showDropdown && (
               <Dropdown

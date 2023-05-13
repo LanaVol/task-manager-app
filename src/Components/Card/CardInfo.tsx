@@ -136,6 +136,8 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   return (
     <Modal onClose={onCLose}>
       <Box
+        bgcolor={"background.default"}
+        color={"text.primary"}
         sx={{
           width: "100%",
           display: "flex",
