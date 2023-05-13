@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
-import { Stack, Box } from "@mui/material";
+import { Stack, Box, Container } from "@mui/material";
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 
@@ -202,10 +203,10 @@ export const TaskBoard = () => {
   };
 
   return (
-    <Box
-      // обгортка для бордів і кнопки AddBoard
-      minHeight="70vh"
+    <Container
+      maxWidth="xl"
       sx={{
+        minHeight: "70vh",
         display: "flex",
         alignItems: matches ? "start" : "center",
         flexDirection: matches ? "row" : "column",
@@ -215,9 +216,9 @@ export const TaskBoard = () => {
         // flexWrap: "wrap",
 
         gap: "20px",
-        backgroundImage: `url(${imageBg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
+        // backgroundImage: `url(${imageBg})`,
+        // backgroundRepeat: "no-repeat",
+        // backgroundSize: "cover",
       }}
     >
       <Stack
@@ -250,6 +251,6 @@ export const TaskBoard = () => {
         placeholder="Enter Board Title"
         onClickAddBtn={addBoardHandler}
       />
-    </Box>
+    </Container>
   );
 };

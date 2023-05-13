@@ -34,7 +34,8 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     <Paper
       elevation={2}
       sx={{
-        backgroundColor: "#ECF5FF",
+        // backgroundColor: "#ECF5FF",
+        backgroundColor: "secondary",
         width: matches ? "fit-content" : "100%",
 
         minWidth: "200px",
