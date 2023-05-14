@@ -1,16 +1,20 @@
 import { React } from "react";
-import { Formik } from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 export const SignupForm = () => {
   return (
     <Formik
       initialValues={{ firstName: "", lastName: "", email: "" }}
-      validationSchema={Yup.object({
+      validationSchema={Yup.object().shape({
         firstName: Yup.string()
+          .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
+          .min(2, "Too short!")
           .max(15, "Must be 15 characters or less")
           .required("Required"),
         lastName: Yup.string()
+          .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
+          .min(2, "Too short!")
           .max(20, "Must be 20 characters or less")
           .required("Required"),
         email: Yup.string().email("Invalid email address").required("Required"),
@@ -22,43 +26,27 @@ export const SignupForm = () => {
         }, 400);
       }}
     >
-      {(formik) => (
-        <form onSubmit={formik.handleSubmit}>
-          <div>
-            <label htmlFor="firstName">First Name</label>
-            <input
-              id="firstName"
-              type="text"
-              {...formik.getFieldProps("firstName")}
-            />
-            {formik.touched.firstName && formik.errors.firstName ? (
-              <div>{formik.errors.firstName}</div>
-            ) : null}
-          </div>
+      <Form>
+        <div>
+          <label htmlFor="firstName">First Name</label>
+          <Field name="firstName" type="text" placeholder="Jane" />
+          <ErrorMessage name="firstName" />
+        </div>
 
-          <div>
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              id="lastName"
-              type="text"
-              {...formik.getFieldProps("lastName")}
-            />
-            {formik.touched.lastName && formik.errors.lastName ? (
-              <div>{formik.errors.lastName}</div>
-            ) : null}
-          </div>
+        <div>
+          <label htmlFor="lastName">Last Name</label>
+          <Field name="lastName" type="text" />
+          <ErrorMessage name="lastName" />
+        </div>
 
-          <div>
-            <label htmlFor="email">Email Address</label>
-            <input id="email" type="email" {...formik.getFieldProps("email")} />
-            {formik.touched.lastName && formik.errors.email ? (
-              <div>{formik.errors.email}</div>
-            ) : null}
-          </div>
+        <div>
+          <label htmlFor="email">Email Address</label>
+          <Field name="email" type="email" />
+          <ErrorMessage name="email" />
+        </div>
 
-          <button type="submit">Submit</button>
-        </form>
-      )}
+        <button type="submit">Submit</button>
+      </Form>
     </Formik>
   );
 };
