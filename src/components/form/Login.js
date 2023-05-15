@@ -1,35 +1,28 @@
-import { React } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField } from "@mui/material";
 
-export const SignupForm = () => {
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
-      .min(2, "Too short!")
-      .max(15, "Must be 15 characters or less")
-      .required("Required"),
-    lastName: Yup.string()
-      .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
-      .min(2, "Too short!")
-      .max(20, "Must be 20 characters or less")
-      .required("Required"),
-    email: Yup.string().email("Invalid email address").required("Required"),
+export const WithMUI = () => {
+  const validationSchema = Yup.object({
+    email: Yup.string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required"),
     password: Yup.string("Enter your password")
-      .max(20, "Must be 20 characters or less")
       .min(8, "Password should be a minimum 8 characters length")
-      .required("Required"),
+      .required("Password is required"),
   });
 
   const formik = useFormik({
-    initialValues: { firstName: "", lastName: "", email: "", password: "" },
+    initialValues: {
+      email: "",
+      password: "",
+    },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
     },
   });
-
   return (
     <Box
       sx={{
@@ -40,28 +33,6 @@ export const SignupForm = () => {
       }}
     >
       <form onSubmit={formik.handleSubmit}>
-        <TextField
-          sx={{ paddingBottom: "20px" }}
-          fullWidth
-          id="firstName"
-          name="firstName"
-          label="First Name"
-          value={formik.values.firstName}
-          onChange={formik.handleChange}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
-        />
-        <TextField
-          sx={{ paddingBottom: "20px" }}
-          fullWidth
-          id="lastName"
-          name="lastName"
-          label="Last Name"
-          value={formik.values.lastName}
-          onChange={formik.handleChange}
-          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-          helperText={formik.touched.lastName && formik.errors.lastName}
-        />
         <TextField
           sx={{ paddingBottom: "20px" }}
           fullWidth
