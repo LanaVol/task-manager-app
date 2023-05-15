@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
 
 import "./App.css";
 import { Header } from "./components/Header/Header";
@@ -7,6 +7,11 @@ import { TaskBoard } from "./pages/Taskboard/Taskboard";
 import { Box, createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { AuthPage } from "./pages/Register/Auth";
+import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
+import { PublicRoute } from "./components/UserMenu/PublicRoute";
+import { LoginForm } from "./components/form/Login";
+import { RegisterForm } from "./components/form/Register";
+import { PrivateRoute } from "./components/UserMenu/PrivateRoute";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -40,8 +45,21 @@ function App() {
         >
           <Header setMode={setMode} mode={mode} />
           <Routes>
-            <Route path="/" element={<TaskBoard />} />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route
+              path="/auth"
+              element={<PublicRoute redirectTo="/" component={<AuthPage />} />}
+            >
+              <Route path="/auth" element={<LoginForm />} />
+              <Route path="/auth/register" element={<RegisterForm />} />
+            </Route>
+
+            <Route
+              path="/"
+              element={
+                <PrivateRoute redirectTo="/auth" component={<TaskBoard />} />
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Box>
       </ThemeProvider>

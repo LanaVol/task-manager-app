@@ -1,9 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import AuthService from "../../services/AuthService";
 
-export const WithMUI = () => {
+export const LoginForm = () => {
   const validationSchema = Yup.object({
     email: Yup.string("Enter your email")
       .email("Enter a valid email")
@@ -21,6 +23,13 @@ export const WithMUI = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
+      async function fetchLogin() {
+        const { data } = await AuthService.login({
+          email: values.email,
+          password: values.password,
+        });
+      }
+      fetchLogin();
     },
   });
   return (
@@ -32,7 +41,22 @@ export const WithMUI = () => {
         alignItems: "center",
       }}
     >
-      <form onSubmit={formik.handleSubmit}>
+      <form
+        onSubmit={formik.handleSubmit}
+        style={{
+          maxWidth: "500px",
+          padding: "50px 30px",
+          border: "1px solid red",
+          autoComplete: "off",
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h5"
+          sx={{ flexGrow: 1, padding: "20px" }}
+        >
+          Login
+        </Typography>
         <TextField
           sx={{ paddingBottom: "20px" }}
           fullWidth
@@ -64,6 +88,14 @@ export const WithMUI = () => {
         >
           Submit
         </Button>
+        <Typography
+          variant="subtitle1"
+          component="p"
+          sx={{ flexGrow: 1, padding: "20px" }}
+        >
+          Don't have an account yet?{" "}
+          <Link to="/auth/register">Create an account</Link>
+        </Typography>
       </form>
     </Box>
   );

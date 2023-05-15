@@ -1,9 +1,11 @@
 import { React } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import AuthService from "../../services/AuthService";
 
-export const SignupForm = () => {
+export const RegisterForm = () => {
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
       .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
@@ -27,6 +29,16 @@ export const SignupForm = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
+
+      async function fetchAuth() {
+        const { data } = await AuthService.register({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        });
+      }
+      fetchAuth();
     },
   });
 
@@ -39,7 +51,22 @@ export const SignupForm = () => {
         alignItems: "center",
       }}
     >
-      <form onSubmit={formik.handleSubmit}>
+      <form
+        onSubmit={formik.handleSubmit}
+        style={{
+          maxWidth: "500px",
+          padding: "50px 30px",
+          border: "1px solid red",
+          autoComplete: "off",
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h5"
+          sx={{ flexGrow: 1, padding: "20px" }}
+        >
+          CREATE AN ACCOUNT
+        </Typography>
         <TextField
           sx={{ paddingBottom: "20px" }}
           fullWidth
@@ -85,6 +112,7 @@ export const SignupForm = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
+
         <Button
           color="primary"
           variant="contained"
@@ -93,6 +121,14 @@ export const SignupForm = () => {
         >
           Submit
         </Button>
+
+        <Typography
+          variant="subtitle1"
+          component="p"
+          sx={{ flexGrow: 1, padding: "20px" }}
+        >
+          Have already an account? <Link to="/auth">Log in</Link>
+        </Typography>
       </form>
     </Box>
   );
