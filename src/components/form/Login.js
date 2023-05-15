@@ -24,10 +24,21 @@ export const LoginForm = () => {
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
       async function fetchLogin() {
-        const { data } = await AuthService.login({
-          email: values.email,
-          password: values.password,
-        });
+        try {
+          const { data } = await AuthService.login({
+            email: values.email,
+            password: values.password,
+          });
+
+          console.log(data);
+
+          localStorage.setItem("token", data.token);
+          // if (localStorage.getItem("token")) {
+          //   const localStorageToken = JSON.parse(localStorage.getItem("token"));
+          // } else {
+          //   localStorage.setItem("token", JSON.stringify(data));
+          // }
+        } catch {}
       }
       fetchLogin();
     },

@@ -4,19 +4,16 @@ import * as Yup from "yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import AuthService from "../../services/AuthService";
+import { AxiosError } from "axios";
 
 export const RegisterForm = () => {
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
+    userName: Yup.string()
       .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
       .min(2, "Too short!")
       .max(15, "Must be 15 characters or less")
       .required("Required"),
-    lastName: Yup.string()
-      .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
-      .min(2, "Too short!")
-      .max(20, "Must be 20 characters or less")
-      .required("Required"),
+
     email: Yup.string().email("Invalid email address").required("Required"),
     password: Yup.string("Enter your password")
       .max(20, "Must be 20 characters or less")
@@ -25,19 +22,25 @@ export const RegisterForm = () => {
   });
 
   const formik = useFormik({
-    initialValues: { firstName: "", lastName: "", email: "", password: "" },
+    initialValues: { userName: "", email: "", password: "" },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
 
       async function fetchAuth() {
-        const { data } = await AuthService.register({
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          password: values.password,
-        });
+        try {
+          const { data } = await AuthService.register({
+            userName: values.firstName,
+            email: values.email,
+            password: values.password,
+          });
+
+          console.log(data.data);
+
+          localStorage.setItem("token", data.token);
+        } catch {}
       }
+
       fetchAuth();
     },
   });
@@ -70,24 +73,13 @@ export const RegisterForm = () => {
         <TextField
           sx={{ paddingBottom: "20px" }}
           fullWidth
-          id="firstName"
-          name="firstName"
-          label="First Name"
-          value={formik.values.firstName}
+          id="userName"
+          name="userName"
+          label="User Name"
+          value={formik.values.userName}
           onChange={formik.handleChange}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
-        />
-        <TextField
-          sx={{ paddingBottom: "20px" }}
-          fullWidth
-          id="lastName"
-          name="lastName"
-          label="Last Name"
-          value={formik.values.lastName}
-          onChange={formik.handleChange}
-          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-          helperText={formik.touched.lastName && formik.errors.lastName}
+          error={formik.touched.userName && Boolean(formik.errors.userName)}
+          helperText={formik.touched.userName && formik.errors.userName}
         />
         <TextField
           sx={{ paddingBottom: "20px" }}
