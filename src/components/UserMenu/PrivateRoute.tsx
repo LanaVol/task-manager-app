@@ -9,15 +9,14 @@ export const PrivateRoute = ({
   component: Component,
   redirectTo = "/",
 }: PrivateRouteProps) => {
-  const isLoggesIn = () => {
+  console.log("privateRoute");
+  const isLoggedIn = () => {
     if (localStorage.getItem("token")) {
-      console.log("yes");
       return true;
     } else {
-      console.log("no");
       return false;
     }
   };
 
-  return isLoggesIn() ? Component : <Navigate to={redirectTo} />;
+  return isLoggedIn() ? Component : <Navigate to={redirectTo} />;
 };

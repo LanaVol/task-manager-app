@@ -22,7 +22,7 @@ export const TaskBoard = ({ mode }: any) => {
     async function fetch() {
       const { data } = await TaskService.getBoards();
       if (data) {
-        setBoards(data[0].boards);
+        setBoards(data[0]?.boards);
       }
     }
     fetch();
@@ -233,18 +233,19 @@ export const TaskBoard = ({ mode }: any) => {
       >
         {/* {loading && <Box>Loading page...</Box>} */}
         {/* {error && <Box color="secondary">{error}</Box>} */}
-        {boards.map((board) => (
-          <Board
-            board={board}
-            key={board.id}
-            addCard={addCardHandler}
-            removeBoard={() => removeBoard(board.id)}
-            removeCard={removeCard}
-            updateCard={updateCard}
-            onDragEnd={onDragEnd}
-            onDragEnter={onDragEnter}
-          />
-        ))}
+        {boards?.length > 0 &&
+          boards.map((board) => (
+            <Board
+              board={board}
+              key={board.id}
+              addCard={addCardHandler}
+              removeBoard={() => removeBoard(board.id)}
+              removeCard={removeCard}
+              updateCard={updateCard}
+              onDragEnd={onDragEnd}
+              onDragEnter={onDragEnter}
+            />
+          ))}
       </Stack>
       <CustomInput
         text="Add Board"

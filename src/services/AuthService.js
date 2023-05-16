@@ -5,8 +5,8 @@ class AuthService {
     return API.post("/auth/login", { email, password });
   }
 
-  static register({ email, password }) {
-    return API.post("/auth/register", { email, password });
+  static register({ userName, email, password }) {
+    return API.post("/auth/register", { userName, email, password });
   }
 }
 

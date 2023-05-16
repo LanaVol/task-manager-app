@@ -1,11 +1,14 @@
-import React from "react";
+import { React, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 
 export const LoginForm = () => {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object({
     email: Yup.string("Enter your email")
       .email("Enter a valid email")
@@ -25,21 +28,19 @@ export const LoginForm = () => {
       console.log(JSON.stringify(values, null, 2));
       async function fetchLogin() {
         try {
+          setError(null);
           const { data } = await AuthService.login({
             email: values.email,
             password: values.password,
           });
 
-          console.log(data);
-
           localStorage.setItem("token", data.token);
-          // if (localStorage.getItem("token")) {
-          //   const localStorageToken = JSON.parse(localStorage.getItem("token"));
-          // } else {
-          //   localStorage.setItem("token", JSON.stringify(data));
-          // }
-        } catch {}
+          navigate("/");
+        } catch (e) {
+          setError(e?.response?.data?.message || "Your network error");
+        }
       }
+
       fetchLogin();
     },
   });
@@ -107,6 +108,16 @@ export const LoginForm = () => {
           Don't have an account yet?{" "}
           <Link to="/auth/register">Create an account</Link>
         </Typography>
+        {error ? (
+          <Typography
+            variant="subtitle1"
+            component="p"
+            color="error"
+            sx={{ flexGrow: 1, padding: "20px" }}
+          >
+            {error}
+          </Typography>
+        ) : null}
       </form>
     </Box>
   );

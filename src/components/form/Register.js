@@ -1,12 +1,15 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
-import { AxiosError } from "axios";
 
 export const RegisterForm = () => {
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState("");
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object().shape({
     userName: Yup.string()
       .matches(/^[A-Za-zА-Яа-я]+$/, "Only letters are allowed")
@@ -29,16 +32,18 @@ export const RegisterForm = () => {
 
       async function fetchAuth() {
         try {
+          setError(null);
           const { data } = await AuthService.register({
             userName: values.firstName,
             email: values.email,
             password: values.password,
           });
 
-          console.log(data.data);
-
           localStorage.setItem("token", data.token);
-        } catch {}
+          navigate("/");
+        } catch (e) {
+          setError(e?.response?.data?.message || "Your network error");
+        }
       }
 
       fetchAuth();
@@ -121,6 +126,17 @@ export const RegisterForm = () => {
         >
           Have already an account? <Link to="/auth">Log in</Link>
         </Typography>
+
+        {error ? (
+          <Typography
+            variant="subtitle1"
+            component="p"
+            color="error"
+            sx={{ flexGrow: 1, padding: "20px" }}
+          >
+            {error}
+          </Typography>
+        ) : null}
       </form>
     </Box>
   );

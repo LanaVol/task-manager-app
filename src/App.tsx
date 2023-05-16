@@ -31,6 +31,12 @@ function App() {
         dark: "#ba000d",
         contrastText: "#000",
       },
+      // error: {
+      //   main: "#d32f2f",
+      //   light: "#ef5350",
+      //   dark: "#c62828",
+      //   contrastText: "#fff",
+      // },
     },
   });
 
