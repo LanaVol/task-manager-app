@@ -27,6 +27,7 @@ export const CustomInput = (props: CustomInputProps) => {
 
   const getTitleBoard = (e: any) => {
     e.preventDefault();
+
     if (inputText && onClickAddBtn) {
       onClickAddBtn(inputText);
       setInputText("");

@@ -16,7 +16,7 @@ import { PrivateRoute } from "./components/UserMenu/PrivateRoute";
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
 
-  const darkTheme = createTheme({
+  const theme = createTheme({
     palette: {
       mode: mode === "light" || mode === "dark" ? mode : "light",
       primary: {
@@ -31,18 +31,12 @@ function App() {
         dark: "#ba000d",
         contrastText: "#000",
       },
-      // error: {
-      //   main: "#d32f2f",
-      //   light: "#ef5350",
-      //   dark: "#c62828",
-      //   contrastText: "#fff",
-      // },
     },
   });
 
   return (
     <BrowserRouter>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={theme}>
         <Box
           bgcolor={"background.default"}
           color={"text.primary"}

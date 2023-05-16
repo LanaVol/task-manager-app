@@ -1,53 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
-import { Stack, Box, Container } from "@mui/material";
+import { Stack, Box, Container, Typography } from "@mui/material";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 
 import imageBg from "../../image/2.png";
 import TaskService from "../../services/TaskService";
+import { Progress } from "../../components/Progress/Progress";
+import { Error } from "../../components/Error/Error";
+import { AxiosError } from "axios";
 
 export const TaskBoard = ({ mode }: any) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [boards, setBoards] = useState<BoardItem[]>([]);
   const [targetCard, setTargetCard] = useState({
     boardId: 0,
     cardId: 0,
   });
   const matches = useMediaQuery("(min-width:600px)");
-  console.log("@matches", matches);
 
   useEffect(() => {
-    async function fetch() {
-      const { data } = await TaskService.getBoards();
-      if (data) {
-        setBoards(data[0]?.boards);
+    (async () => {
+      try {
+        setIsLoading(true);
+        const { data } = await TaskService.getBoards();
+
+        if (data) setBoards(data[0]?.boards);
+      } catch (e: any) {
+        setError(e.response?.data?.message || "Network Error");
+      } finally {
+        setIsLoading(false);
       }
-    }
-    fetch();
+    })();
   }, []);
+
+  // function update({ boardId, board }: any) {
+  //   TaskService.updateBoard({
+  //     boardId: boardId,
+  //     board: board,
+  //   });
+  // }
 
   // adding new board
   const addBoardHandler = async (boardTitle: string) => {
-    const { data } = await TaskService.addBoard({
-      title: boardTitle,
-      cards: [],
-    });
-    if (data) {
-      setBoards([...boards, data]);
+    try {
+      setIsLoading(true);
+      const { data } = await TaskService.addBoard({
+        title: boardTitle,
+        cards: [],
+      });
+      if (data) setBoards([...boards, data]);
+    } catch (e: any) {
+      setError(e.response?.data?.message || "Network Error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // remove current board
   const removeBoard = async (boardId: number) => {
-    const { data } = await TaskService.deleteBoard(boardId);
-    const updatedBoardList = boards.filter((board) => board.id !== data);
-    setBoards(updatedBoardList);
+    setIsLoading(true);
+    try {
+      const { data } = await TaskService.deleteBoard(boardId);
+      const updatedBoardList = boards.filter((board) => board.id !== data);
+      setBoards(updatedBoardList);
+    } catch (err: any) {
+      setError(err.message);
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // adding new card to current board
   const addCardHandler = async (boardId: number, cardTitle: string) => {
+    setIsLoading(true);
     const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
     if (boardIndex === -1) return;
 
@@ -72,10 +102,12 @@ export const TaskBoard = ({ mode }: any) => {
       return el;
     });
     setBoards(updatedListBoard);
+    setIsLoading(false);
   };
 
   // remove current card
   const removeCard = async (boardId: number, cardId: number) => {
+    setIsLoading(true);
     const boardIndex = boards.findIndex((el: BoardItem) => {
       return el.id === boardId;
     });
@@ -99,6 +131,7 @@ export const TaskBoard = ({ mode }: any) => {
       return el;
     });
     setBoards(updatedListBoard);
+    setIsLoading(false);
   };
 
   // update current card
@@ -107,6 +140,7 @@ export const TaskBoard = ({ mode }: any) => {
     cardId: number,
     card: CardItem
   ) => {
+    setIsLoading(true);
     const boardIndex = boards.findIndex((el) => {
       return el.id === boardId;
     });
@@ -132,10 +166,12 @@ export const TaskBoard = ({ mode }: any) => {
       return el;
     });
     setBoards(updatedListBoard);
+    setIsLoading(false);
   };
 
   // drag&drop cards
   const onDragEnd = async (boardId: number, cardId: number) => {
+    setIsLoading(true);
     const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
       return el.id === boardId;
     });
@@ -195,6 +231,7 @@ export const TaskBoard = ({ mode }: any) => {
 
     setBoards(updateBoardList);
     setTargetCard({ boardId: 0, cardId: 0 });
+    setIsLoading(false);
   };
 
   const onDragEnter = (boardId: number, cardId: number) => {
@@ -210,11 +247,8 @@ export const TaskBoard = ({ mode }: any) => {
         display: "flex",
         alignItems: matches ? "start" : "center",
         flexDirection: matches ? "row" : "column",
-
         justifyContent: matches ? "space-between" : "center",
         padding: "20px 30px",
-        // flexWrap: "wrap",
-
         gap: "20px",
         // backgroundImage: `url(${imageBg})`,
         // backgroundRepeat: "no-repeat",
@@ -231,8 +265,8 @@ export const TaskBoard = ({ mode }: any) => {
         gap="10px"
         flexWrap="wrap"
       >
-        {/* {loading && <Box>Loading page...</Box>} */}
-        {/* {error && <Box color="secondary">{error}</Box>} */}
+        {isLoading ? <Progress /> : null}
+        {error ? <Error error={error} /> : null}
         {boards?.length > 0 &&
           boards.map((board) => (
             <Board
