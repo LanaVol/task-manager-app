@@ -10,8 +10,6 @@ export const PublicRoute = ({
   redirectTo = "/",
 }: PublicRouteProps) => {
   const isLoggedIn = () => {
-    console.log("publicRoute");
-
     if (localStorage.getItem("token")) {
       return true;
     } else {

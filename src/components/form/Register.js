@@ -2,12 +2,14 @@ import { React, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SendIcon from "@mui/icons-material/Send";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 
 export const RegisterForm = () => {
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
@@ -33,6 +35,7 @@ export const RegisterForm = () => {
       async function fetchAuth() {
         try {
           setError(null);
+          setLoading(true);
           const { data } = await AuthService.register({
             userName: values.firstName,
             email: values.email,
@@ -41,7 +44,9 @@ export const RegisterForm = () => {
 
           localStorage.setItem("token", data.token);
           navigate("/");
+          setLoading(false);
         } catch (e) {
+          setLoading(false);
           setError(e?.response?.data?.message || "Your network error");
         }
       }
@@ -110,14 +115,17 @@ export const RegisterForm = () => {
           helperText={formik.touched.password && formik.errors.password}
         />
 
-        <Button
+        <LoadingButton
           color="primary"
           variant="contained"
           type="submit"
+          loading={loading}
+          endIcon={<SendIcon />}
+          loadingPosition="end"
           sx={{ padding: "12px 30px" }}
         >
-          Submit
-        </Button>
+          <span>Submit</span>
+        </LoadingButton>
 
         <Typography
           variant="subtitle1"

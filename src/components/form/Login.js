@@ -1,12 +1,15 @@
 import { React, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SendIcon from "@mui/icons-material/Send";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 
 export const LoginForm = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
@@ -26,9 +29,11 @@ export const LoginForm = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
+
       async function fetchLogin() {
         try {
           setError(null);
+          setLoading(true);
           const { data } = await AuthService.login({
             email: values.email,
             password: values.password,
@@ -36,7 +41,9 @@ export const LoginForm = () => {
 
           localStorage.setItem("token", data.token);
           navigate("/");
+          setLoading(false);
         } catch (e) {
+          setLoading(false);
           setError(e?.response?.data?.message || "Your network error");
         }
       }
@@ -92,14 +99,17 @@ export const LoginForm = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-        <Button
+        <LoadingButton
           color="primary"
           variant="contained"
           type="submit"
+          loading={loading}
+          endIcon={<SendIcon />}
+          loadingPosition="end"
           sx={{ padding: "12px 30px" }}
         >
-          Submit
-        </Button>
+          <span>Submit</span>
+        </LoadingButton>
         <Typography
           variant="subtitle1"
           component="p"

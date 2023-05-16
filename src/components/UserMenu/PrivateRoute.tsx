@@ -9,7 +9,6 @@ export const PrivateRoute = ({
   component: Component,
   redirectTo = "/",
 }: PrivateRouteProps) => {
-  console.log("privateRoute");
   const isLoggedIn = () => {
     if (localStorage.getItem("token")) {
       return true;
