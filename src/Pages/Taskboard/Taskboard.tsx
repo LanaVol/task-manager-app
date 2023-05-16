@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
-import { Stack, Box, Container, Typography } from "@mui/material";
+import { Grid, Container, Typography, Paper, Box } from "@mui/material";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
@@ -11,6 +11,7 @@ import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
 import { AxiosError } from "axios";
+import { styled } from "@mui/material/styles";
 
 export const TaskBoard = ({ mode }: any) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -239,10 +240,22 @@ export const TaskBoard = ({ mode }: any) => {
     setTargetCard({ boardId: boardId, cardId: cardId });
   };
 
+  // MUI
+  const Item = styled(Paper)(({ theme }) => ({
+    // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    backgroundColor: theme.palette.mode === "dark" ? "orange" : "blue",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+  // MUIend
+
   return (
     <Container
       maxWidth="xl"
       sx={{
+        flexGrow: 1,
         minHeight: "70vh",
         display: "flex",
         alignItems: matches ? "start" : "center",
@@ -255,32 +268,39 @@ export const TaskBoard = ({ mode }: any) => {
         // backgroundSize: "cover",
       }}
     >
-      <Stack
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gap={2}
         sx={{
-          width: matches ? "90%" : "100%",
-          justifyContent: matches ? "space-between" : "center",
+          flexGrow: 1,
+          border: "1px solid blue",
         }}
-        direction="row"
-        spacing={2}
-        gap="10px"
-        flexWrap="wrap"
       >
         {isLoading ? <Progress /> : null}
         {error ? <Error error={error} /> : null}
         {boards?.length > 0 &&
           boards.map((board) => (
-            <Board
-              board={board}
-              key={board.id}
-              addCard={addCardHandler}
-              removeBoard={() => removeBoard(board.id)}
-              removeCard={removeCard}
-              updateCard={updateCard}
-              onDragEnd={onDragEnd}
-              onDragEnter={onDragEnter}
-            />
+            <Box
+              gridColumn="span 3"
+              // sx={{ border: "1px solid red" }}
+              // sx={{ width: matches ? "fit-content" : "100%" }}
+            >
+              <Item>
+                <Board
+                  board={board}
+                  key={board.id}
+                  addCard={addCardHandler}
+                  removeBoard={() => removeBoard(board.id)}
+                  removeCard={removeCard}
+                  updateCard={updateCard}
+                  onDragEnd={onDragEnd}
+                  onDragEnter={onDragEnter}
+                />
+              </Item>
+            </Box>
           ))}
-      </Stack>
+      </Box>
       <CustomInput
         text="Add Board"
         placeholder="Enter Board Title"
