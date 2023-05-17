@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
-import { Grid, Container, Typography, Paper, Box } from "@mui/material";
+import { GridItem } from "../../components/style/GridItem/GridItem";
+import { ItemBtn } from "../../components/style/styles/styles";
+import { Grid, Container, Box } from "@mui/material";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
@@ -11,9 +13,8 @@ import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
 import { AxiosError } from "axios";
-import { styled } from "@mui/material/styles";
 
-export const TaskBoard = ({ mode }: any) => {
+export const TaskBoard = ({ mode, theme }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [boards, setBoards] = useState<BoardItem[]>([]);
@@ -21,7 +22,7 @@ export const TaskBoard = ({ mode }: any) => {
     boardId: 0,
     cardId: 0,
   });
-  const matches = useMediaQuery("(min-width:600px)");
+  // const matches = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
     (async () => {
@@ -240,53 +241,25 @@ export const TaskBoard = ({ mode }: any) => {
     setTargetCard({ boardId: boardId, cardId: cardId });
   };
 
-  // MUI
-  const Item = styled(Paper)(({ theme }) => ({
-    // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    backgroundColor: theme.palette.mode === "dark" ? "orange" : "blue",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
-  // MUIend
-
   return (
     <Container
       maxWidth="xl"
       sx={{
-        flexGrow: 1,
-        minHeight: "70vh",
-        display: "flex",
-        alignItems: matches ? "start" : "center",
-        flexDirection: matches ? "row" : "column",
-        justifyContent: matches ? "space-between" : "center",
         padding: "20px 30px",
-        gap: "20px",
+        position: "relative",
+        margin: "0 auto",
         // backgroundImage: `url(${imageBg})`,
         // backgroundRepeat: "no-repeat",
         // backgroundSize: "cover",
       }}
     >
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gap={2}
-        sx={{
-          flexGrow: 1,
-          border: "1px solid blue",
-        }}
-      >
+      <Grid container spacing={2}>
         {isLoading ? <Progress /> : null}
         {error ? <Error error={error} /> : null}
         {boards?.length > 0 &&
           boards.map((board) => (
-            <Box
-              gridColumn="span 3"
-              // sx={{ border: "1px solid red" }}
-              // sx={{ width: matches ? "fit-content" : "100%" }}
-            >
-              <Item>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
+              <GridItem>
                 <Board
                   board={board}
                   key={board.id}
@@ -297,15 +270,20 @@ export const TaskBoard = ({ mode }: any) => {
                   onDragEnd={onDragEnd}
                   onDragEnter={onDragEnter}
                 />
-              </Item>
-            </Box>
+              </GridItem>
+            </Grid>
           ))}
+      </Grid>
+
+      <Box sx={{ position: "relative", bottom: "30px", right: "30px" }}>
+        <ItemBtn>
+          <CustomInput
+            // text="Add Board"
+            placeholder="Enter Board Title"
+            onClickAddBtn={addBoardHandler}
+          />
+        </ItemBtn>
       </Box>
-      <CustomInput
-        text="Add Board"
-        placeholder="Enter Board Title"
-        onClickAddBtn={addBoardHandler}
-      />
     </Container>
   );
 };

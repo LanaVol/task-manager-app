@@ -6,6 +6,7 @@ import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { grey } from "@mui/material/colors";
 
 interface BoardProps {
   board: BoardItem;
@@ -28,18 +29,19 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     onDragEnter,
   } = props;
   const [showDropdown, setShowDropdown] = useState(false);
-  const matches = useMediaQuery("(min-width:600px)");
+  // const matches = useMediaQuery("(min-width:600px)");
 
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        // width: matches ? "fit-content" : "100%",
-        // minWidth: "200px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
+    <Box
+      sx={
+        {
+          // width: matches ? "fit-content" : "100%",
+          // display: "flex",
+          // flexDirection: "column",
+          // justifyContent: "space-between",
+          // backgroundColor: "inherit",
+        }
+      }
     >
       <Box>
         <Box
@@ -47,7 +49,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           justifyContent="space-between"
           alignItems="center"
           marginBottom="10px"
-          sx={{ border: "1px solid red" }}
+          sx={{}}
         >
           <Typography variant="h5" gutterBottom sx={{ padding: "15px" }}>
             {board.title}
@@ -60,6 +62,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
           <Box sx={{ zIndex: 5 }}>
             <IconButton
+              // sx={{ backgroundColor: "#ff3d00" }}
               aria-label="menu"
               onClick={() => {
                 setShowDropdown(!showDropdown);
@@ -102,6 +105,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           addCard(board.id, value);
         }}
       />
-    </Paper>
+    </Box>
   );
 };

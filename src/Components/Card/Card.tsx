@@ -77,7 +77,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
 
         <Box
           sx={{
-            border: "1px solid red",
+            // border: "1px solid red",
             borderRadius: "10px",
             display: "flex",
             justifyContent: "space-between",

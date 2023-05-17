@@ -12,6 +12,7 @@ import { PublicRoute } from "./components/UserMenu/PublicRoute";
 import { LoginForm } from "./components/form/Login";
 import { RegisterForm } from "./components/form/Register";
 import { PrivateRoute } from "./components/UserMenu/PrivateRoute";
+// import { theme, mode } from "./components/style/styles/theme";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -27,10 +28,16 @@ function App() {
       },
       secondary: {
         light: "#ff7961",
-        main: "#f44336",
-        dark: "#ba000d",
+        main: "#ff3d00",
+        dark: "#dd2c00",
         contrastText: "#000",
       },
+      // info: {
+      //   light: "#a19796",
+      //   main: "#c7c7c7",
+      //   dark: "#412e29",
+      //   contrastText: "#000",
+      // },
     },
   });
 

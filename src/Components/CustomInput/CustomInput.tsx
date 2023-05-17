@@ -4,7 +4,7 @@ import { Add as Add, Close, Done } from "@mui/icons-material/";
 import IconButton from "@mui/material/IconButton";
 
 interface CustomInputProps {
-  text: string;
+  text?: string;
   placeholder: string;
   defaultValue?: string;
   onClickAddBtn: (value: string) => void;
@@ -13,14 +13,8 @@ interface CustomInputProps {
 }
 
 export const CustomInput = (props: CustomInputProps) => {
-  const {
-    text,
-    placeholder,
-    defaultValue,
-    onClickAddBtn,
-    directionBtn,
-    width,
-  } = props;
+  const { text, placeholder, defaultValue, onClickAddBtn, directionBtn } =
+    props;
 
   const [isCustomInput, setIsCustomInput] = useState<boolean>(false);
   const [inputText, setInputText] = useState<string>(defaultValue || "");
@@ -36,20 +30,13 @@ export const CustomInput = (props: CustomInputProps) => {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      borderRadius="7px"
-      width={width}
-      // width="100%"
-    >
+    <Box display="flex" justifyContent="center" borderRadius="7px">
       {isCustomInput ? (
         <Paper
           elevation={1}
           sx={{
-            // width: "200px",
             width: "fit-content",
-            padding: "15px",
+            padding: "20px",
             display: "flex",
             justifyContent: "center",
             gap: 1,
@@ -95,15 +82,17 @@ export const CustomInput = (props: CustomInputProps) => {
           </Stack>
         </Paper>
       ) : (
-        <Box>
-          <Button
-            // startIcon={<Add />}
-            onClick={() => setIsCustomInput(true)}
-            variant="outlined"
-          >
-            {text}
-          </Button>
-        </Box>
+        // <Box>
+        <Button
+          onClick={() => setIsCustomInput(true)}
+          // variant="contained"
+          size="medium"
+          color="inherit"
+          sx={{ padding: "20px" }}
+        >
+          {text ? text : <Add />}
+        </Button>
+        // </Box>
       )}
     </Box>
   );
