@@ -10,11 +10,20 @@ interface CustomInputProps {
   onClickAddBtn: (value: string) => void;
   directionBtn?: string;
   width?: string;
+  padding?: string;
+  bdRadius?: string;
 }
 
 export const CustomInput = (props: CustomInputProps) => {
-  const { text, placeholder, defaultValue, onClickAddBtn, directionBtn } =
-    props;
+  const {
+    text,
+    placeholder,
+    defaultValue,
+    onClickAddBtn,
+    directionBtn,
+    padding,
+    bdRadius,
+  } = props;
 
   const [isCustomInput, setIsCustomInput] = useState<boolean>(false);
   const [inputText, setInputText] = useState<string>(defaultValue || "");
@@ -30,7 +39,7 @@ export const CustomInput = (props: CustomInputProps) => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" borderRadius="7px">
+    <Box display="flex" justifyContent="center">
       {isCustomInput ? (
         <Paper
           elevation={1}
@@ -82,13 +91,18 @@ export const CustomInput = (props: CustomInputProps) => {
           </Stack>
         </Paper>
       ) : (
-        // <Box>
+        // <Box sx={{}}>
         <Button
+          fullWidth
           onClick={() => setIsCustomInput(true)}
           // variant="contained"
           size="medium"
           color="inherit"
-          sx={{ padding: "20px" }}
+          sx={{
+            borderRadius: { bdRadius },
+            padding: { padding },
+            "&:hover": { borderRadius: { bdRadius } },
+          }}
         >
           {text ? text : <Add />}
         </Button>

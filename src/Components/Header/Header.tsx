@@ -50,7 +50,7 @@ export const Header = ({ mode, setMode }: any) => {
             <IconButton
               onClick={() => setMode(mode === "light" ? "dark" : "light")}
             >
-              {mode === "light" ? <Brightness7Icon /> : <Brightness4Icon />}
+              {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
             </IconButton>
           </Toolbar>
         </Container>

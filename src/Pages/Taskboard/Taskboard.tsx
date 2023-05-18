@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { GridItem } from "../../components/style/GridItem/GridItem";
-import { ItemBtn } from "../../components/style/styles/styles";
+import { ItemAddBoardBtn } from "../../components/style/styles/styles";
 import { Grid, Container, Box } from "@mui/material";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -275,14 +275,16 @@ export const TaskBoard = ({ mode, theme }: any) => {
           ))}
       </Grid>
 
-      <Box sx={{ position: "relative", bottom: "30px", right: "30px" }}>
-        <ItemBtn>
+      <Box sx={{}}>
+        <ItemAddBoardBtn>
           <CustomInput
             // text="Add Board"
             placeholder="Enter Board Title"
             onClickAddBtn={addBoardHandler}
+            padding="20px"
+            bdRadius="50%"
           />
-        </ItemBtn>
+        </ItemAddBoardBtn>
       </Box>
     </Container>
   );

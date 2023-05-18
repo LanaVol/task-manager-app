@@ -2,8 +2,8 @@ import { styled } from "@mui/material/styles";
 import { Paper } from "@mui/material";
 
 const shadow = {
-  1: "-1px 2px 2px 1px #00bcd450, 2px 2px 2px 1px #00bcd450, 2px 2px 2px 1px #00bcd450",
-  2: "-1px 2px 2px 1px #bf360c50, 2px 2px 2px 1px #bf360c50, 2px 2px 2px 1px #bf360c50",
+  1: "-1px 2px 5px 3px #00bcd450, 2px 1px 5px 1px #00bcd450, 2px 1px 1px 0px #00bcd450",
+  2: "-1px 2px 5px 3px #bf360c50, 2px 1px 5px 1px #bf360c50, 2px 1px 1px 0px #bf360c50",
   // 2: "0px 2px 1px -1px #bf360c, 0px 1px 1px 0px #bf360c, 0px 1px 3px 0px #bf360c",
 };
 

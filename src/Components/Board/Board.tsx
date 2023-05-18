@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Paper, Box, Typography, IconButton, Button } from "@mui/material";
 // import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
+import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { grey, deepOrange } from "@mui/material/colors";
+import { ItemAddCardBtn, TitleBgBoard } from "../style/styles/styles";
 
 interface BoardProps {
   board: BoardItem;
@@ -51,28 +53,34 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           }
         }
       >
-        <Box
+        <TitleBgBoard
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          marginBottom="10px"
-          sx={{ border: "1px solid blue", padding: "8px" }}
+          marginBottom="12px"
+          sx={{
+            // border: "1px solid blue",
+            padding: "8px",
+            borderRadius: "7px 7px 0px 0px ",
+          }}
         >
-          <Typography variant="h5" gutterBottom sx={{ padding: "0px" }}>
+          <Typography variant="h5" gutterBottom sx={{ margin: "0" }}>
             {board.title}
           </Typography>
-          <Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
             <Typography
-              variant="subtitle1"
+              variant="h6"
               gutterBottom
               sx={{
-                border: "1px solid red",
-                padding: "7px 16px",
-                borderRadius: "50%",
+                // border: "1px solid red",
+                padding: "6px",
+                borderRadius: "5px",
+                margin: "0",
               }}
             >
               {board?.cards?.length || 0}
             </Typography>
+            <NoteOutlinedIcon color="primary" fontSize="medium" />
           </Box>
 
           <Box sx={{ zIndex: 5 }}>
@@ -99,11 +107,11 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
               </Dropdown>
             )}
           </Box>
-        </Box>
+        </TitleBgBoard>
         <Box
           sx={{
-            // border: "1px solid red",
             padding: "7px",
+            marginBottom: "12px",
             maxHeight: "450px",
             overflow: "hidden",
             "&:hover": { overflowY: "scroll" },
@@ -111,7 +119,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
               width: "7px",
             },
             "&::-webkit-scrollbar-thumb": {
-              backgroundColor: deepOrange[300],
+              backgroundColor: deepOrange["A400"],
               borderRadius: "5px",
             },
             "&::-webkit-scrollbar-track": {
@@ -133,13 +141,18 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         </Box>
       </Box>
 
-      <CustomInput
-        text="Add Card"
-        placeholder="Enter Card Title"
-        onClickAddBtn={(value: string) => {
-          addCard(board.id, value);
-        }}
-      />
+      {/* <Box> */}
+      <ItemAddCardBtn>
+        <CustomInput
+          text="Add Card"
+          placeholder="Enter Card Title"
+          onClickAddBtn={(value: string) => {
+            addCard(board.id, value);
+          }}
+          directionBtn="row"
+        />
+      </ItemAddCardBtn>
+      {/* </Box> */}
     </Box>
   );
 };
