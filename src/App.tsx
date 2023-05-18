@@ -32,12 +32,6 @@ function App() {
         dark: "#dd2c00",
         contrastText: "#000",
       },
-      // info: {
-      //   light: "#a19796",
-      //   main: "#c7c7c7",
-      //   dark: "#412e29",
-      //   contrastText: "#000",
-      // },
     },
   });
 

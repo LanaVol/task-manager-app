@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Paper, Box, Typography, IconButton, Button } from "@mui/material";
-import LinearScaleIcon from "@mui/icons-material/LinearScale";
+// import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { grey } from "@mui/material/colors";
+import { grey, deepOrange } from "@mui/material/colors";
 
 interface BoardProps {
   board: BoardItem;
@@ -43,33 +44,49 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         }
       }
     >
-      <Box>
+      <Box
+        sx={
+          {
+            // border: "1px solid red",
+          }
+        }
+      >
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           marginBottom="10px"
-          sx={{}}
+          sx={{ border: "1px solid blue", padding: "8px" }}
         >
-          <Typography variant="h5" gutterBottom sx={{ padding: "15px" }}>
+          <Typography variant="h5" gutterBottom sx={{ padding: "0px" }}>
             {board.title}
           </Typography>
           <Box>
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography
+              variant="subtitle1"
+              gutterBottom
+              sx={{
+                border: "1px solid red",
+                padding: "7px 16px",
+                borderRadius: "50%",
+              }}
+            >
               {board?.cards?.length || 0}
             </Typography>
           </Box>
 
           <Box sx={{ zIndex: 5 }}>
             <IconButton
-              // sx={{ backgroundColor: "#ff3d00" }}
+              size="large"
+              color="secondary"
               aria-label="menu"
               onClick={() => {
                 setShowDropdown(!showDropdown);
               }}
             >
-              <LinearScaleIcon fontSize="medium" color="secondary" />
+              <DragHandleRoundedIcon fontSize="inherit" />
             </IconButton>
+
             {showDropdown && (
               <Dropdown onClose={() => setShowDropdown(false)}>
                 <Box
@@ -83,7 +100,25 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             )}
           </Box>
         </Box>
-        <Box sx={{ padding: "7px 15px", maxWidth: "300px" }}>
+        <Box
+          sx={{
+            // border: "1px solid red",
+            padding: "7px",
+            maxHeight: "450px",
+            overflow: "hidden",
+            "&:hover": { overflowY: "scroll" },
+            "&::-webkit-scrollbar": {
+              width: "7px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: deepOrange[300],
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: grey[300],
+            },
+          }}
+        >
           {board?.cards?.map((card) => (
             <Card
               card={card}
