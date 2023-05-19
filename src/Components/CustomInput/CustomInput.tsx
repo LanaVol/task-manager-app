@@ -44,7 +44,7 @@ export const CustomInput = (props: CustomInputProps) => {
         <Paper
           elevation={1}
           sx={{
-            width: "fit-content",
+            width: "100%",
             padding: "20px",
             display: "flex",
             justifyContent: "center",

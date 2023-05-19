@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Paper, Box, Typography, IconButton, Button } from "@mui/material";
 // import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
-import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
+import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
+import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
@@ -60,13 +61,22 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           marginBottom="12px"
           sx={{
             // border: "1px solid blue",
-            padding: "8px",
+            padding: "7px 10px",
             borderRadius: "7px 7px 0px 0px ",
           }}
         >
-          <Typography variant="h5" gutterBottom sx={{ margin: "0" }}>
-            {board.title}
-          </Typography>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            gap={1}
+          >
+            <NoteAltRoundedIcon color="secondary" fontSize="medium" />
+            <Typography variant="h5" gutterBottom sx={{ margin: "0" }}>
+              {board.title}
+            </Typography>
+          </Box>
+
           <Box display="flex" justifyContent="center" alignItems="center">
             <Typography
               variant="h6"
@@ -80,7 +90,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             >
               {board?.cards?.length || 0}
             </Typography>
-            <NoteOutlinedIcon color="primary" fontSize="medium" />
+            <NoteRoundedIcon color="secondary" fontSize="medium" />
           </Box>
 
           <Box sx={{ zIndex: 5 }}>
@@ -123,7 +133,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
               borderRadius: "5px",
             },
             "&::-webkit-scrollbar-track": {
-              backgroundColor: grey[300],
+              backgroundColor: deepOrange["100"],
             },
           }}
         >

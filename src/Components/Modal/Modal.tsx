@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Paper } from "@mui/material";
+import { ItemCardInfoBG } from "../style/styles/styles";
 
 export const Modal = (props: any) => {
   return (
@@ -16,26 +17,26 @@ export const Modal = (props: any) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        gap: 5,
-        zIndex: "10",
+        // gap: 5,
+        zIndex: 15,
       }}
       onClick={() => (props.onClose ? props.onClose() : "")}
     >
-      <Box
+      <ItemCardInfoBG
         sx={{
-          backgroundColor: "#ECF5FF",
-          width: "80%",
+          // backgroundColor: "red",
+          // width: "80%",
           maxWidth: "700px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 2,
-          padding: "30px",
+          // display: "flex",
+          // justifyContent: "space-between",
+          // alignItems: "center",
+
+          padding: "40px 30px",
         }}
         onClick={(event: any) => event.stopPropagation()}
       >
         {props.children}
-      </Box>
+      </ItemCardInfoBG>
     </Paper>
   );
 };

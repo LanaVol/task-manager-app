@@ -11,12 +11,13 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  Grid,
 } from "@mui/material";
 import {
   Title as Title,
   Description as Description,
   CalendarMonth as CalendarMonth,
-  Assignment as Assignment,
+  AssignmentTurnedIn as AssignmentTurnedIn,
   Close as Close,
   BookmarkBorder as BookmarkBorder,
   Bookmark as Bookmark,
@@ -25,6 +26,8 @@ import { DateCalendar } from "../Calendar/Calendar";
 import { colorList } from "../../data/dataUtility";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Chip } from "../Common/Chip";
+import { ItemCardInfo } from "../style/styles/styles";
+import { grey, deepOrange } from "@mui/material/colors";
 
 interface CardInfoProps {
   card: CardItem;
@@ -38,9 +41,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   const [selectedColor, setSelectedColor] = useState("");
   const [cardValues, setCardValues] = useState<CardItem>({
     ...card,
-    labels: [],
   });
-  console.log(cardValues);
 
   const updateTitle = (value: string) => {
     setCardValues({ ...cardValues, title: value });
@@ -52,18 +53,21 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
   //-------------------------------- add and remove label
   const addLabel = (label: LabelItem) => {
-    const index = cardValues.labels?.findIndex((el) => el.text === label.text);
-    if (index > -1) {
-      return;
-    }
+    const { labels } = cardValues;
+
+    const index = labels.findIndex((el) => el.text === label.text);
+
+    if (index > -1) return;
 
     setSelectedColor("");
-    setCardValues({ ...cardValues, labels: [...cardValues.labels, label] });
+    setCardValues((prevCardValues) => ({
+      ...prevCardValues,
+      labels: [...prevCardValues.labels, label],
+    }));
   };
 
   const removeLabel = (label: LabelItem) => {
     const tempLabels = cardValues.labels.filter((el) => el.text !== label.text);
-
     setCardValues({ ...cardValues, labels: tempLabels });
   };
 
@@ -86,36 +90,32 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, tasks: tempTasks });
   };
 
-  const updateTask = (id: number, value: boolean) => {
+  const checkDoneTask = (id: number, value: boolean) => {
     const tasks = [...cardValues.tasks];
 
     const index = tasks.findIndex((el) => {
       return el.id === id;
     });
-    if (index < 0) {
-      return;
-    }
+    if (index < 0) return;
 
     tasks[index].completed = Boolean(value);
 
     setCardValues({ ...cardValues, tasks });
-    console.log(cardValues);
   };
 
-  const calculatePercent = () => {
-    if (!cardValues.tasks?.length) {
-      return 0;
-    }
-    const completed = cardValues.tasks?.filter(
-      (task) => task.completed
-    )?.length;
-    return (completed / cardValues.tasks?.length) * 100;
-  };
-  const calculatedPercent = calculatePercent();
+  // const calculatePercent = () => {
+  //   if (!cardValues.tasks?.length) {
+  //     return 0;
+  //   }
+  //   const completed = cardValues.tasks?.filter(
+  //     (task) => task.completed
+  //   )?.length;
+  //   return (completed / cardValues.tasks?.length) * 100;
+  // };
+  // const calculatedPercent = calculatePercent();
 
   // update date
   const updateDate = (date: string) => {
-    console.log("@@", date);
     if (!date) {
       return;
     }
@@ -135,128 +135,102 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
   return (
     <Modal onClose={onCLose}>
-      <Box
-        bgcolor={"background.default"}
-        color={"text.primary"}
+      <Grid
+        container
+        rowSpacing={2}
         sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          padding: "20px 30px",
+          border: "1px solid red",
+          // width: "100%",
+          // display: "flex",
+          // flexDirection: "column",
+          // gap: "16px",
+          // padding: "20px 30px",
         }}
       >
-        <Paper
-          elevation={2}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px",
-          }}
-        >
-          <Box
-            sx={{
-              width: "50%",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Title color="info" fontSize="large" />
-            <Typography
-              variant="h5"
-              gutterBottom
-              marginBottom={0}
-              sx={{ padding: "5px" }}
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <ItemCardInfo>
+            <Box
+              sx={{
+                // width: "50%",
+                display: "flex",
+                alignItems: "center",
+              }}
             >
-              Title
-            </Typography>
-          </Box>
-          <CustomInput
-            directionBtn={"row"}
-            width="fullwidth"
-            // Уточнити щодо найменування в Custom Input
-            text={cardValues.title || "Edit Title"}
-            placeholder="Enter Title"
-            onClickAddBtn={updateTitle}
-          />
-        </Paper>
+              <Title color="primary" fontSize="large" />
+              <Typography
+                variant="h5"
+                gutterBottom
+                marginBottom={0}
+                sx={{ padding: "5px" }}
+              >
+                Title
+              </Typography>
+            </Box>
+            <CustomInput
+              directionBtn={"row"}
+              // Уточнити щодо найменування в Custom Input
+              text={cardValues.title || "Edit Title"}
+              placeholder="Enter Title"
+              onClickAddBtn={updateTitle}
+            />
+          </ItemCardInfo>
+        </Grid>
 
-        <Paper
-          elevation={2}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Description color="info" fontSize="large" />
-            <Typography
-              variant="h5"
-              gutterBottom
-              marginBottom={0}
-              sx={{ padding: "5px" }}
+        <Grid item xs={12}>
+          <ItemCardInfo>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              Description
-            </Typography>
-          </Box>
-          <CustomInput
-            directionBtn={"row"}
-            defaultValue={cardValues.desc}
-            text={cardValues.desc || "Add a Description"}
-            placeholder="Enter Description"
-            onClickAddBtn={updateDescript}
-          />
-        </Paper>
+              <Description color="primary" fontSize="large" />
+              <Typography
+                variant="h5"
+                gutterBottom
+                marginBottom={0}
+                sx={{ padding: "5px" }}
+              >
+                Description
+              </Typography>
+            </Box>
+            <CustomInput
+              directionBtn={"row"}
+              defaultValue={cardValues.desc}
+              text={cardValues.desc || "Add a Description"}
+              placeholder="Enter Description"
+              onClickAddBtn={updateDescript}
+            />
+          </ItemCardInfo>
+        </Grid>
 
-        <Paper
-          elevation={2}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <CalendarMonth color="info" fontSize="large" />
-            <Typography
-              variant="h5"
-              gutterBottom
-              marginBottom={0}
-              sx={{ padding: "5px" }}
+        <Grid item xs={12}>
+          <ItemCardInfo>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              Date
-            </Typography>
-          </Box>
-          <DateCalendar updateDate={updateDate} />
-        </Paper>
+              <CalendarMonth color="primary" fontSize="large" />
+              <Typography
+                variant="h5"
+                gutterBottom
+                marginBottom={0}
+                sx={{ padding: "5px" }}
+              >
+                Date
+              </Typography>
+            </Box>
+            <DateCalendar updateDate={updateDate} />
+          </ItemCardInfo>
+        </Grid>
 
-        <Box>
-          <Paper
-            elevation={2}
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "16px",
-            }}
-          >
+        <Grid item xs={12}>
+          {/* <Box> */}
+          <ItemCardInfo>
             <Box
               sx={{
                 display: "flex",
@@ -271,7 +245,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                   alignItems: "center",
                 }}
               >
-                <BookmarkBorder color="info" fontSize="large" />
+                <BookmarkBorder color="primary" fontSize="large" />
                 <Typography
                   variant="h5"
                   gutterBottom
@@ -294,28 +268,31 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                flexWrap: "wrap",
               }}
             >
-              <List dense={dense} sx={{ padding: "0" }}>
-                <ListItem>
-                  {colorList.map((color, index) => (
-                    <ListItemIcon
-                      key={index}
-                      onClick={() => setSelectedColor(color)}
-                      sx={{
-                        minWidth: "15px",
-                        border: "1px solid gray",
-                        borderRadius: "15px",
-                        padding: "2px",
-                        marginRight: "5px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Bookmark sx={{ backgroundColor: { color } }} />
-                    </ListItemIcon>
-                  ))}
-                </ListItem>
-              </List>
+              <Grid item xs={5} md={10} xl={10}>
+                {/* <List dense={dense} sx={{ padding: "0" }}> */}
+                {/* <ListItem> */}
+                {colorList.map((color, index) => (
+                  <ListItemIcon
+                    key={index}
+                    onClick={() => setSelectedColor(color)}
+                    sx={{
+                      minWidth: "15px",
+                      border: "1px solid gray",
+                      borderRadius: "15px",
+                      padding: "2px",
+                      marginRight: "5px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Bookmark sx={{ backgroundColor: { color } }} />
+                  </ListItemIcon>
+                ))}
+                {/* </ListItem> */}
+                {/* </List> */}
+              </Grid>
               <CustomInput
                 text="Add Label"
                 placeholder="Enter label text"
@@ -324,45 +301,38 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 }
               />
             </Box>
-          </Paper>
-        </Box>
+          </ItemCardInfo>
+          {/* </Box> */}
+        </Grid>
 
-        <Box>
-          <Paper
-            elevation={2}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "16px",
-              marginBottom: "10px",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Assignment color="info" fontSize="large" />
-              <Typography
-                variant="h5"
-                gutterBottom
-                marginBottom={0}
-                sx={{ padding: "5px" }}
+        <Grid item xs={12}>
+          <Box>
+            <ItemCardInfo sx={{ marginBottom: "7px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                Tasks
-              </Typography>
-            </Box>
-            <CustomInput
-              directionBtn={"row"}
-              text={"Add New Task"}
-              placeholder="Enter Task"
-              onClickAddBtn={addTask}
-            />
-          </Paper>
-          {/* <Box
+                <AssignmentTurnedIn color="primary" fontSize="large" />
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  marginBottom={0}
+                  sx={{ padding: "5px" }}
+                >
+                  Tasks
+                </Typography>
+              </Box>
+              <CustomInput
+                directionBtn={"row"}
+                text={"Add New Task"}
+                placeholder="Enter Task"
+                onClickAddBtn={addTask}
+              />
+            </ItemCardInfo>
+            {/* <Box
             sx={{ width: "fullwidth", height: "20px", border: "1px solid red" }}
           >
             <Box
@@ -376,47 +346,70 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
             />
           </Box> */}
 
-          <Paper elevation={2} sx={{ marginBottom: "10px" }}>
-            {cardValues.tasks?.map((el) => (
-              <Paper
-                elevation={1}
-                key={el.id}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "5px",
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Checkbox
-                    {...label}
-                    checked={el.completed}
-                    onChange={(e) => updateTask(el.id, e.target.checked)}
-                  />
-                  <Typography
-                    variant="subtitle1"
-                    align="left"
+            <ItemCardInfo
+              sx={{
+                maxHeight: "200px",
+                overflow: "hidden",
+                "&:hover": { overflowY: "scroll" },
+                "&::-webkit-scrollbar": {
+                  width: "7px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: deepOrange["A400"],
+                  borderRadius: "5px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: deepOrange["100"],
+                },
+              }}
+            >
+              {cardValues.tasks?.map((el) => (
+                <Paper
+                  elevation={1}
+                  key={el.id}
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "5px",
+                  }}
+                >
+                  <Box
                     sx={{
-                      textDecoration: el.completed ? "line-through" : "none",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    {el.text}
-                  </Typography>
-                </Box>
+                    <Checkbox
+                      {...label}
+                      checked={el.completed}
+                      onChange={(e) => checkDoneTask(el.id, e.target.checked)}
+                    />
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{
+                        textDecoration: el.completed ? "line-through" : "none",
+                      }}
+                    >
+                      {el.text}
+                    </Typography>
+                  </Box>
 
-                <IconButton
-                  aria-label="close"
-                  color="secondary"
-                  onClick={() => removeTask(el.id)}
-                >
-                  <Close fontSize="medium" />
-                </IconButton>
-              </Paper>
-            ))}
-          </Paper>
-        </Box>
-      </Box>
+                  <IconButton
+                    aria-label="close"
+                    color="secondary"
+                    onClick={() => removeTask(el.id)}
+                  >
+                    <Close fontSize="medium" />
+                  </IconButton>
+                </Paper>
+              ))}
+            </ItemCardInfo>
+          </Box>
+        </Grid>
+      </Grid>
     </Modal>
   );
 };

@@ -12,9 +12,13 @@ import {
   Button,
 } from "@mui/material";
 import {
-  LinearScale as LinearScaleIcon,
   PlaylistAddCheck as PlaylistAddCheckSharp,
+  NoteRounded as NoteRoundedIcon,
+  DragHandleRounded as DragHandleRoundedIcon,
+  CalendarMonthOutlined as CalendarMonthOutlinedIcon,
 } from "@mui/icons-material";
+import { TitleBgCard } from "../style/styles/styles";
+// import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 
 interface CardProps {
   card: CardItem;
@@ -28,17 +32,18 @@ interface CardProps {
 export const Card: React.FC<CardProps> = (props: CardProps) => {
   const { card, boardId, removeCard, updateCard, onDragEnd, onDragEnter } =
     props;
-  const { id, title, date, tasks, labels } = card;
+  const { id, title, date, tasks, labels, desc } = card;
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCardInfo, setShowCardInfo] = useState(false);
 
   return (
     <Paper
-      elevation={5}
+      elevation={4}
       sx={{
         padding: "20px",
         marginBottom: "10px",
+        cursor: "pointer",
       }}
     >
       {showCardInfo && (
@@ -69,23 +74,42 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
         justifyContent="space-between"
         alignItems="start"
       >
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "3px",
+          }}
+        >
           {labels?.map((el, index: number) => (
             <Chip key={index} el={el} />
           ))}
         </Box>
 
-        <Box
+        <TitleBgCard
           sx={{
-            border: "1px solid red",
-            borderRadius: "10px",
             display: "flex",
-            // justifyContent: "space-between",
-            // alignItems: "space-between",
+            width: "100%",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius: "3px",
           }}
         >
-          <Box>
-            <Typography variant="h6" gutterBottom>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={1}
+            sx={{
+              // border: "1px solid green",
+              padding: "2px 6px",
+            }}
+          >
+            <NoteRoundedIcon color="inherit" fontSize="small" />
+            <Typography variant="h6" gutterBottom margin="0">
               {title}
             </Typography>
           </Box>
@@ -96,8 +120,8 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
               setShowDropdown(true);
             }}
           >
-            <IconButton aria-label="menu">
-              <LinearScaleIcon fontSize="medium" color="secondary" />
+            <IconButton aria-label="menu" color="inherit">
+              <DragHandleRoundedIcon fontSize="inherit" />
             </IconButton>
             {showDropdown && (
               <Dropdown
@@ -111,21 +135,46 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
               </Dropdown>
             )}
           </Box>
+        </TitleBgCard>
+
+        <Box
+          display="flex"
+          gap={1}
+          sx={{
+            borderBottom: "1px solid #009688",
+            // borderRadius: "3px",
+          }}
+        >
+          {" "}
+          {date ? (
+            <CalendarMonthOutlinedIcon color="primary" fontSize="small" />
+          ) : null}
+          <Typography variant="subtitle2" gutterBottom margin="0">
+            {date}
+          </Typography>
         </Box>
 
-        <Typography variant="subtitle2" gutterBottom>
-          {date}
+        <Typography
+          variant="subtitle2"
+          gutterBottom
+          sx={{ textAlign: "justify", color: "grey.500" }}
+        >
+          {desc || "Click on this card for setting"}
         </Typography>
-        <Box display="flex" gap="10px">
-          <PlaylistAddCheckSharp />
+
+        <Box display="flex" gap="10px" justifyContent="center" width="100%">
+          <PlaylistAddCheckSharp color="primary" fontSize="medium" />
           {tasks && tasks?.length > 0 ? (
-            <Box>
+            <Typography variant="subtitle1" gutterBottom>
               {`${tasks?.filter((el) => el.completed)?.length}/${
                 tasks?.length
               } tasks`}
-            </Box>
+            </Typography>
           ) : (
-            <Box>{`${tasks?.length} tasks`}</Box>
+            <Typography
+              variant="subtitle1"
+              gutterBottom
+            >{`${tasks?.length} tasks`}</Typography>
           )}
         </Box>
       </Stack>
