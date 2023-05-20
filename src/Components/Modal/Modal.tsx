@@ -12,7 +12,6 @@ export const Modal = (props: any) => {
         left: "0",
         height: "100%",
         width: "100%",
-        padding: "20px",
         backgroundColor: "rgba(0,0,0,0.3)",
         display: "flex",
         justifyContent: "center",
@@ -26,7 +25,7 @@ export const Modal = (props: any) => {
         sx={{
           // backgroundColor: "red",
           // width: "80%",
-          maxWidth: "700px",
+          maxWidth: "600px",
           // display: "flex",
           // justifyContent: "space-between",
           // alignItems: "center",

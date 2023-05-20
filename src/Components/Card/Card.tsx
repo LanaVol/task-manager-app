@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CardItem } from "../../interfaces/DataTypes";
 import { CardInfo } from "./CardInfo";
 import { Dropdown } from "../Dropdown/Dropdown";
-import { Chip } from "../Common/Chip";
+import { Chipp } from "../Common/Chip";
 import {
   Box,
   Paper,
@@ -85,7 +85,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           }}
         >
           {labels?.map((el, index: number) => (
-            <Chip key={index} el={el} />
+            <Chipp key={index} el={el} />
           ))}
         </Box>
 

@@ -54,6 +54,7 @@ export const TitleBgCard = styled(Box)(({ theme }) => ({
     theme.palette.mode === "dark" ? "1px solid #ff3d00" : "1px solid #009688",
   color: theme.palette.mode === "dark" ? "#ff3d00" : "#009688",
 }));
+
 export const ItemCardInfoBG = styled(Box)(({ theme }) => ({
   // backgroundColor:
   //   theme.palette.mode === "dark"

@@ -65,10 +65,11 @@ export const CustomInput = (props: CustomInputProps) => {
             maxRows={3}
           />
 
-          <Stack
-            spacing={1}
+          <Box
             sx={{
+              padding: "3px",
               justifyContent: "center",
+              alignItems: "center",
               flexDirection: `${directionBtn || "column"}`,
             }}
           >
@@ -88,7 +89,7 @@ export const CustomInput = (props: CustomInputProps) => {
             >
               <Close fontSize="medium" />
             </IconButton>
-          </Stack>
+          </Box>
         </Paper>
       ) : (
         // <Box sx={{}}>

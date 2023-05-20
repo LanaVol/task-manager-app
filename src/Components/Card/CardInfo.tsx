@@ -21,13 +21,16 @@ import {
   Close as Close,
   BookmarkBorder as BookmarkBorder,
   Bookmark as Bookmark,
+  OutlinedFlag,
 } from "@mui/icons-material/";
 import { DateCalendar } from "../Calendar/Calendar";
 import { colorList } from "../../data/dataUtility";
 import { CustomInput } from "../CustomInput/CustomInput";
-import { Chip } from "../Common/Chip";
-import { ItemCardInfo } from "../style/styles/styles";
+import { Chipp } from "../Common/Chip";
+import { ItemAddCardBtn, ItemCardInfo } from "../style/styles/styles";
 import { grey, deepOrange } from "@mui/material/colors";
+import { wrap } from "module";
+import { date } from "yup";
 
 interface CardInfoProps {
   card: CardItem;
@@ -38,7 +41,7 @@ interface CardInfoProps {
 
 export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   const { card, boardId, onCLose, updateCard } = props;
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColor, setSelectedColor] = useState("#00796b");
   const [cardValues, setCardValues] = useState<CardItem>({
     ...card,
   });
@@ -59,7 +62,8 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
     if (index > -1) return;
 
-    setSelectedColor("");
+    setSelectedColor("#00796b");
+
     setCardValues((prevCardValues) => ({
       ...prevCardValues,
       labels: [...prevCardValues.labels, label],
@@ -125,7 +129,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   // for checkbox MUI
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-  const [dense, setDense] = useState(false);
+  // const [dense, setDense] = useState(false);
 
   useEffect(() => {
     if (updateCard) {
@@ -135,183 +139,208 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
   return (
     <Modal onClose={onCLose}>
-      <Grid
-        container
-        rowSpacing={2}
-        sx={{
-          border: "1px solid red",
-          // width: "100%",
-          // display: "flex",
-          // flexDirection: "column",
-          // gap: "16px",
-          // padding: "20px 30px",
-        }}
-      >
+      <Typography variant="h5" gutterBottom color="grey" marginBottom="30px">
+        Card Information
+      </Typography>
+      <Grid container rowSpacing={1}>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <ItemCardInfo>
-            <Box
-              sx={{
-                // width: "50%",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Title color="primary" fontSize="large" />
-              <Typography
-                variant="h5"
-                gutterBottom
-                marginBottom={0}
-                sx={{ padding: "5px" }}
-              >
-                Title
-              </Typography>
-            </Box>
-            <CustomInput
-              directionBtn={"row"}
-              // Уточнити щодо найменування в Custom Input
-              text={cardValues.title || "Edit Title"}
-              placeholder="Enter Title"
-              onClickAddBtn={updateTitle}
-            />
-          </ItemCardInfo>
-        </Grid>
-
-        <Grid item xs={12}>
-          <ItemCardInfo>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Description color="primary" fontSize="large" />
-              <Typography
-                variant="h5"
-                gutterBottom
-                marginBottom={0}
-                sx={{ padding: "5px" }}
-              >
-                Description
-              </Typography>
-            </Box>
-            <CustomInput
-              directionBtn={"row"}
-              defaultValue={cardValues.desc}
-              text={cardValues.desc || "Add a Description"}
-              placeholder="Enter Description"
-              onClickAddBtn={updateDescript}
-            />
-          </ItemCardInfo>
-        </Grid>
-
-        <Grid item xs={12}>
-          <ItemCardInfo>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <CalendarMonth color="primary" fontSize="large" />
-              <Typography
-                variant="h5"
-                gutterBottom
-                marginBottom={0}
-                sx={{ padding: "5px" }}
-              >
-                Date
-              </Typography>
-            </Box>
-            <DateCalendar updateDate={updateDate} />
-          </ItemCardInfo>
-        </Grid>
-
-        <Grid item xs={12}>
-          {/* <Box> */}
-          <ItemCardInfo>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
+            <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Title color="primary" fontSize="large" />
+                <Typography
+                  // fontSize="20px"
+                  variant="h5"
+                  gutterBottom
+                  marginBottom={0}
+                  sx={{ padding: "5px" }}
+                >
+                  {cardValues.title}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4} margin="0 auto">
+              <ItemAddCardBtn>
+                <CustomInput
+                  directionBtn={"row"}
+                  text={"Edit Title"}
+                  // text={cardValues.title || "Edit Title"}
+                  placeholder="Enter Title"
+                  onClickAddBtn={updateTitle}
+                />
+              </ItemAddCardBtn>
+            </Grid>
+          </ItemCardInfo>
+        </Grid>
+
+        <Grid item xs={12}>
+          <ItemCardInfo>
+            <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "start",
                   alignItems: "center",
                 }}
               >
-                <BookmarkBorder color="primary" fontSize="large" />
+                <Description color="primary" fontSize="large" />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  marginBottom={0}
+                  sx={{
+                    padding: "5px",
+                    textAlign: "justify",
+                  }}
+                >
+                  {cardValues.desc || "Description"}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4} margin="0 auto">
+              <ItemAddCardBtn>
+                <CustomInput
+                  directionBtn={"row"}
+                  defaultValue={cardValues.desc}
+                  text={"Edit a Description"}
+                  placeholder="Enter Description"
+                  onClickAddBtn={updateDescript}
+                />
+              </ItemAddCardBtn>
+            </Grid>
+          </ItemCardInfo>
+        </Grid>
+
+        <Grid item xs={12}>
+          <ItemCardInfo>
+            <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "start",
+                  alignItems: "center",
+                }}
+              >
+                <CalendarMonth color="primary" fontSize="large" />
                 <Typography
                   variant="h5"
                   gutterBottom
                   marginBottom={0}
                   sx={{ padding: "5px" }}
                 >
+                  Date
+                </Typography>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4} margin="0 auto">
+              <DateCalendar updateDate={updateDate} />
+            </Grid>
+          </ItemCardInfo>
+        </Grid>
+
+        <Grid item xs={12}>
+          <ItemCardInfo sx={{ alignItems: "start", gap: "5px" }}>
+            <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "start",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
+                <BookmarkBorder color="primary" fontSize="large" />
+                <Typography variant="h5" gutterBottom marginBottom={0}>
                   Labels
                 </Typography>
               </Box>
 
-              <Box width="fit-content" display="flex" gap="7px">
+              <Box width="fit-content" display="flex" flexWrap="wrap" gap="7px">
                 {cardValues.labels?.map((el, index) => (
-                  <Chip key={index} el={el} removeLabel={removeLabel} />
+                  <Chipp key={index} el={el} removeLabel={removeLabel} />
                 ))}
               </Box>
-            </Box>
+            </Grid>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexWrap: "wrap",
-              }}
+            <Grid
+              item
+              container
+              rowGap={1}
+              xs={12}
+              sm={4}
+              md={4}
+              lg={4}
+              xl={4}
+              margin="0 auto"
             >
-              <Grid item xs={5} md={10} xl={10}>
-                {/* <List dense={dense} sx={{ padding: "0" }}> */}
-                {/* <ListItem> */}
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                margin="0 auto"
+              >
                 {colorList.map((color, index) => (
                   <ListItemIcon
                     key={index}
                     onClick={() => setSelectedColor(color)}
                     sx={{
                       minWidth: "15px",
-                      border: "1px solid gray",
+                      border: "1px solid #bf360c50",
                       borderRadius: "15px",
                       padding: "2px",
-                      marginRight: "5px",
                       cursor: "pointer",
+                      "&:hover": {
+                        boxShadow:
+                          "0px 4px 6px #bf360c50, -2px -4px 6px #bf360c50",
+                      },
                     }}
                   >
                     <Bookmark sx={{ backgroundColor: { color } }} />
                   </ListItemIcon>
                 ))}
-                {/* </ListItem> */}
-                {/* </List> */}
               </Grid>
-              <CustomInput
-                text="Add Label"
-                placeholder="Enter label text"
-                onClickAddBtn={(value: string) =>
-                  addLabel({ color: selectedColor, text: value })
-                }
-              />
-            </Box>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                margin="0 auto"
+              >
+                <ItemAddCardBtn>
+                  <CustomInput
+                    directionBtn={"row"}
+                    text="Add Label"
+                    placeholder="Enter label text"
+                    onClickAddBtn={(value: string) =>
+                      addLabel({ color: selectedColor, text: value })
+                    }
+                  />
+                </ItemAddCardBtn>
+              </Grid>
+            </Grid>
           </ItemCardInfo>
-          {/* </Box> */}
         </Grid>
 
         <Grid item xs={12}>
-          <Box>
-            <ItemCardInfo sx={{ marginBottom: "7px" }}>
+          <ItemCardInfo sx={{ marginBottom: "7px" }}>
+            <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "start",
                   alignItems: "center",
                 }}
               >
@@ -322,17 +351,22 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                   marginBottom={0}
                   sx={{ padding: "5px" }}
                 >
-                  Tasks
+                  {`Tasks: ${cardValues.tasks.length}`}
                 </Typography>
               </Box>
-              <CustomInput
-                directionBtn={"row"}
-                text={"Add New Task"}
-                placeholder="Enter Task"
-                onClickAddBtn={addTask}
-              />
-            </ItemCardInfo>
-            {/* <Box
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4} margin="0 auto">
+              <ItemAddCardBtn>
+                <CustomInput
+                  directionBtn={"row"}
+                  text={"Add New Task"}
+                  placeholder="Enter Task"
+                  onClickAddBtn={addTask}
+                />
+              </ItemAddCardBtn>
+            </Grid>
+          </ItemCardInfo>
+          {/* <Box
             sx={{ width: "fullwidth", height: "20px", border: "1px solid red" }}
           >
             <Box
@@ -346,68 +380,68 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
             />
           </Box> */}
 
-            <ItemCardInfo
-              sx={{
-                maxHeight: "200px",
-                overflow: "hidden",
-                "&:hover": { overflowY: "scroll" },
-                "&::-webkit-scrollbar": {
-                  width: "7px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: deepOrange["A400"],
-                  borderRadius: "5px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  backgroundColor: deepOrange["100"],
-                },
-              }}
-            >
-              {cardValues.tasks?.map((el) => (
-                <Paper
-                  elevation={1}
-                  key={el.id}
+          <ItemCardInfo
+            sx={{
+              maxHeight: "200px",
+              overflow: "hidden",
+              "&:hover": { overflowY: "scroll" },
+              "&::-webkit-scrollbar": {
+                width: "7px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: deepOrange["A400"],
+                borderRadius: "5px",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: deepOrange["100"],
+              },
+            }}
+          >
+            {cardValues.tasks?.map((el) => (
+              <Paper
+                elevation={1}
+                key={el.id}
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "5px",
+                  marginBottom: "7px",
+                }}
+              >
+                <Box
                   sx={{
-                    width: "100%",
                     display: "flex",
-                    justifyContent: "space-between",
                     alignItems: "center",
-                    padding: "5px",
                   }}
                 >
-                  <Box
+                  <Checkbox
+                    {...label}
+                    checked={el.completed}
+                    onChange={(e) => checkDoneTask(el.id, e.target.checked)}
+                  />
+                  <Typography
+                    variant="subtitle1"
+                    align="left"
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
+                      textDecoration: el.completed ? "line-through" : "none",
                     }}
                   >
-                    <Checkbox
-                      {...label}
-                      checked={el.completed}
-                      onChange={(e) => checkDoneTask(el.id, e.target.checked)}
-                    />
-                    <Typography
-                      variant="subtitle1"
-                      align="left"
-                      sx={{
-                        textDecoration: el.completed ? "line-through" : "none",
-                      }}
-                    >
-                      {el.text}
-                    </Typography>
-                  </Box>
+                    {el.text}
+                  </Typography>
+                </Box>
 
-                  <IconButton
-                    aria-label="close"
-                    color="secondary"
-                    onClick={() => removeTask(el.id)}
-                  >
-                    <Close fontSize="medium" />
-                  </IconButton>
-                </Paper>
-              ))}
-            </ItemCardInfo>
-          </Box>
+                <IconButton
+                  aria-label="close"
+                  color="secondary"
+                  onClick={() => removeTask(el.id)}
+                >
+                  <Close fontSize="medium" />
+                </IconButton>
+              </Paper>
+            ))}
+          </ItemCardInfo>
         </Grid>
       </Grid>
     </Modal>
