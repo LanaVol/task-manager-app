@@ -1,6 +1,7 @@
 import { styled } from "@mui/material/styles";
 import { Paper, Box } from "@mui/material";
-// import { grey, cyan, deepOrange } from "@mui/material/colors";
+import { shadow } from "../GridItem/GridItem";
+import { blueGrey } from "@mui/material/colors";
 
 export const ItemAddBoardBtn = styled(Paper)(({ theme }) => ({
   backgroundColor:
@@ -59,11 +60,15 @@ export const ItemCardInfoBG = styled(Box)(({ theme }) => ({
   // backgroundColor:
   //   theme.palette.mode === "dark"
   //     ? theme.palette.primary.dark
-  //     : theme.palette.secondary.light,
-  backgroundColor: theme.palette.mode === "dark" ? "#00695c" : "#ffccbc",
-  borderRadius: "16px",
-
-  // color: theme.palette.mode === "dark" ? "#ff3d00" : "#009688",
+  //     : theme.palette.primary.light,
+  backgroundColor:
+    theme.palette.mode === "dark" ? blueGrey[900] : blueGrey[100],
+  boxShadow: theme.palette.mode === "dark" ? shadow[1] : shadow[2],
+  borderRadius: "30px",
+  color:
+    theme.palette.mode === "dark"
+      ? theme.palette.primary.contrastText
+      : theme.palette.secondary.contrastText,
 }));
 
 export const ItemCardInfo = styled(Paper)(({ theme }) => ({

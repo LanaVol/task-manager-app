@@ -258,11 +258,10 @@ export const TaskBoard = ({ mode, theme }: any) => {
         {error ? <Error error={error} /> : null}
         {boards?.length > 0 &&
           boards.map((board) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={board.id}>
               <GridItem>
                 <Board
                   board={board}
-                  key={board.id}
                   addCard={addCardHandler}
                   removeBoard={() => removeBoard(board.id)}
                   removeCard={removeCard}

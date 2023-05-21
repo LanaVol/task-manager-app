@@ -5,7 +5,6 @@ import { ItemCardInfoBG } from "../style/styles/styles";
 export const Modal = (props: any) => {
   return (
     <Paper
-      elevation={2}
       sx={{
         position: "fixed",
         top: "0",
@@ -16,26 +15,30 @@ export const Modal = (props: any) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        // gap: 5,
         zIndex: 15,
       }}
       onClick={() => (props.onClose ? props.onClose() : "")}
     >
-      <ItemCardInfoBG
+      <Box
         sx={{
-          // backgroundColor: "red",
-          // width: "80%",
           maxWidth: "600px",
-          // display: "flex",
-          // justifyContent: "space-between",
-          // alignItems: "center",
-
-          padding: "40px 30px",
+          padding: "30px",
+          maxHeight: "90vh",
+          overflowY: "auto",
         }}
-        onClick={(event: any) => event.stopPropagation()}
       >
-        {props.children}
-      </ItemCardInfoBG>
+        <ItemCardInfoBG
+          sx={{
+            // maxWidth: "600px",
+            padding: "36px 26px",
+            // maxHeight: "90vh",
+            // overflowY: "auto",
+          }}
+          onClick={(event: any) => event.stopPropagation()}
+        >
+          {props.children}
+        </ItemCardInfoBG>
+      </Box>
     </Paper>
   );
 };

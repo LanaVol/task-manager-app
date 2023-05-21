@@ -1,8 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { LabelItem } from "../../interfaces/DataTypes";
-import { Chip, IconButton } from "@mui/material";
-import Stack from "@mui/material/Stack";
-
 import { Close as Close } from "@mui/icons-material";
 
 interface ChipProps {
@@ -10,38 +7,36 @@ interface ChipProps {
   removeLabel?: (label: LabelItem) => void;
 }
 
-export const Chipp = (props: ChipProps) => {
+export const Chip = (props: ChipProps) => {
   const { el, removeLabel } = props;
 
   return (
-    <Chip
-      label={el.text}
-      size="medium"
-      onClick={() => removeLabel && removeLabel(el)}
-      sx={{ backgroundColor: el.color, color: "#fff" }}
-    />
-
-    // <label
-    //   style={{
-    //     backgroundColor: el.color,
-    //     color: "#fff",
-    //     width: "fit-content",
-    //     padding: "3px 6px",
-    //     borderRadius: "7px",
-    //     display: "flex",
-    //     justifyContent: "space-between",
-    //     alignItems: "center",
-    //     gap: "7px",
-    //   }}
-    // >
-    //   {el.text}
-    //   {removeLabel && (
-    //     <Close
-    //       fontSize="small"
-    //       sx={{ width: "18px", color: "#fff", cursor: "pointer" }}
-    //       onClick={() => removeLabel(el)}
-    //     />
-    //   )}
-    // </label>
+    <label
+      style={{
+        backgroundColor: el.color,
+        color: "#fff",
+        width: "fit-content",
+        padding: "4px 7px",
+        borderRadius: "12px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: "7px",
+      }}
+    >
+      {el.text}
+      {removeLabel && (
+        <Close
+          fontSize="small"
+          sx={{
+            color: "#fff",
+            cursor: "pointer",
+            borderRadius: "50%",
+            backgroundColor: "#ffffff50",
+          }}
+          onClick={() => removeLabel(el)}
+        />
+      )}
+    </label>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { CardItem, LabelItem, TaskItem } from "../../interfaces/DataTypes";
 import { Modal } from "../Modal/Modal";
 import {
@@ -8,8 +7,6 @@ import {
   IconButton,
   Paper,
   Checkbox,
-  List,
-  ListItem,
   ListItemIcon,
   Grid,
 } from "@mui/material";
@@ -26,10 +23,10 @@ import {
 import { DateCalendar } from "../Calendar/Calendar";
 import { colorList } from "../../data/dataUtility";
 import { CustomInput } from "../CustomInput/CustomInput";
-import { Chipp } from "../Common/Chip";
+import { Chip } from "../Common/Chip";
 import { ItemAddCardBtn, ItemCardInfo } from "../style/styles/styles";
-import { grey, deepOrange } from "@mui/material/colors";
-import { wrap } from "module";
+import { deepOrange } from "@mui/material/colors";
+// import { wrap } from "module";
 import { date } from "yup";
 
 interface CardInfoProps {
@@ -54,7 +51,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, desc: value });
   };
 
-  //-------------------------------- add and remove label
+  //--------------- add and remove label
   const addLabel = (label: LabelItem) => {
     const { labels } = cardValues;
 
@@ -75,7 +72,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, labels: tempLabels });
   };
 
-  //------------------------------ add, remove & update new task
+  //--------------------- add, remove & update new task
   const addTask = (value: string) => {
     const task: TaskItem = {
       id: Date.now() + Math.random() * 2,
@@ -118,7 +115,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   // };
   // const calculatedPercent = calculatePercent();
 
-  // update date
+  // ------------ update date
   const updateDate = (date: string) => {
     if (!date) {
       return;
@@ -139,12 +136,31 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
   return (
     <Modal onClose={onCLose}>
-      <Typography variant="h5" gutterBottom color="grey" marginBottom="30px">
-        Card Information
-      </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        marginBottom="16px"
+      >
+        <Typography variant="h5" gutterBottom color="inherit">
+          Card Information
+        </Typography>
+
+        <IconButton
+          aria-label="close"
+          color="inherit"
+          sx={{ backgroundColor: "inherit", borderRadius: "50%" }}
+          onClick={() => {
+            onCLose();
+          }}
+        >
+          <Close fontSize="medium" />
+        </IconButton>
+      </Box>
+
       <Grid container rowSpacing={1}>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-          <ItemCardInfo>
+          <ItemCardInfo elevation={3}>
             <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
@@ -156,8 +172,8 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
               >
                 <Title color="primary" fontSize="large" />
                 <Typography
-                  // fontSize="20px"
-                  variant="h5"
+                  variant="h4"
+                  fontSize="20px"
                   gutterBottom
                   marginBottom={0}
                   sx={{ padding: "5px" }}
@@ -181,7 +197,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ItemCardInfo>
+          <ItemCardInfo elevation={3}>
             <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
@@ -193,6 +209,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 <Description color="primary" fontSize="large" />
                 <Typography
                   variant="h6"
+                  fontSize="18px"
                   gutterBottom
                   marginBottom={0}
                   sx={{
@@ -219,7 +236,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ItemCardInfo>
+          <ItemCardInfo elevation={3}>
             <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
@@ -231,6 +248,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 <CalendarMonth color="primary" fontSize="large" />
                 <Typography
                   variant="h5"
+                  fontSize="20px"
                   gutterBottom
                   marginBottom={0}
                   sx={{ padding: "5px" }}
@@ -247,7 +265,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ItemCardInfo sx={{ alignItems: "start", gap: "5px" }}>
+          <ItemCardInfo sx={{ alignItems: "start", gap: "5px" }} elevation={3}>
             <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
@@ -258,14 +276,19 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 }}
               >
                 <BookmarkBorder color="primary" fontSize="large" />
-                <Typography variant="h5" gutterBottom marginBottom={0}>
+                <Typography
+                  variant="h5"
+                  fontSize="20px"
+                  gutterBottom
+                  marginBottom={0}
+                >
                   Labels
                 </Typography>
               </Box>
 
               <Box width="fit-content" display="flex" flexWrap="wrap" gap="7px">
                 {cardValues.labels?.map((el, index) => (
-                  <Chipp key={index} el={el} removeLabel={removeLabel} />
+                  <Chip key={index} el={el} removeLabel={removeLabel} />
                 ))}
               </Box>
             </Grid>
@@ -335,7 +358,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ItemCardInfo sx={{ marginBottom: "7px" }}>
+          <ItemCardInfo sx={{ marginBottom: "5px" }} elevation={3}>
             <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
               <Box
                 sx={{
@@ -347,6 +370,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 <AssignmentTurnedIn color="primary" fontSize="large" />
                 <Typography
                   variant="h5"
+                  fontSize="20px"
                   gutterBottom
                   marginBottom={0}
                   sx={{ padding: "5px" }}
@@ -381,6 +405,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
           </Box> */}
 
           <ItemCardInfo
+            elevation={3}
             sx={{
               maxHeight: "200px",
               overflow: "hidden",
@@ -406,8 +431,8 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  padding: "5px",
-                  marginBottom: "7px",
+                  padding: "3px",
+                  marginBottom: "5px",
                 }}
               >
                 <Box
