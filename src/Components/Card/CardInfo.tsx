@@ -142,7 +142,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
         alignItems="center"
         marginBottom="16px"
       >
-        <Typography variant="h5" gutterBottom color="inherit">
+        <Typography variant="h5" gutterBottom color="inherit" marginBottom={0}>
           Card Information
         </Typography>
 

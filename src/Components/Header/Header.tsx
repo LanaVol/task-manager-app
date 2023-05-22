@@ -1,58 +1,94 @@
-import React from "react";
-import {
-  Box,
-  Typography,
-  Toolbar,
-  Button,
-  AppBar,
-  Container,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography, Toolbar, AppBar, Container } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import {
-  Menu as MenuIcon,
-  DarkMode as DarkMode,
-  LightMode as LigthMode,
-} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import { BurgerMenu } from "./Burger";
+import { Mode } from "./Mode";
+import { LogOut } from "./LogOut";
 
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+type Anchor = "left";
 
 export const Header = ({ mode, setMode }: any) => {
   const navigate = useNavigate();
+  const matches = useMediaQuery("(max-width:600px)");
+  const [burgerMenu, setBurgerMenu] = useState(false);
+  const [stateBurger, setStateBurger] = useState({
+    left: false,
+  });
+
+  useEffect(() => {
+    if (!matches) {
+      setBurgerMenu(false);
+    }
+  }, [matches]);
 
   const logOut = () => {
     localStorage.setItem("token", "");
     navigate("/auth");
   };
 
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setStateBurger({ ...stateBurger, [anchor]: open });
+      setBurgerMenu(!burgerMenu);
+    };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar>
-            {/* <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
+            {matches ? (
+              <IconButton
+                onClick={toggleDrawer("left", true)}
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+            ) : null}
+
+            {burgerMenu ? (
+              <BurgerMenu
+                burgerMenu={burgerMenu}
+                matches={matches}
+                stateBurger={stateBurger}
+                toggleDrawer={toggleDrawer}
+                logOut={logOut}
+                mode={mode}
+                setMode={setMode}
+              />
+            ) : null}
+
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, padding: "10px" }}
             >
-              <MenuIcon />
-            </IconButton> */}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Task Manager App
             </Typography>
-            <Button color="inherit" onClick={logOut}>
-              Log out
-            </Button>
 
-            <IconButton
-              onClick={() => setMode(mode === "light" ? "dark" : "light")}
-              sx={{ color: "#fff" }}
-            >
-              {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
-            </IconButton>
+            {matches ? "" : <LogOut logOut={logOut} />}
+
+            {matches ? (
+              ""
+            ) : (
+              <Mode mode={mode} setMode={setMode} matches={matches} />
+            )}
           </Toolbar>
         </Container>
       </AppBar>

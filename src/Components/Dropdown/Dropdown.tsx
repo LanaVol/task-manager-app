@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 
 export const Dropdown = (props: any) => {
   const dropdownRef: any = useRef(null);
@@ -26,19 +26,20 @@ export const Dropdown = (props: any) => {
   });
 
   return (
-    <Box
+    <Paper
       ref={dropdownRef}
       style={{
+        width: "fit-content",
         display: "flex",
         flexDirection: "column",
         position: "absolute",
-        backgroundColor: "white",
-        padding: "20px",
+        top: "36px",
+        right: 0,
+        padding: "12px",
         borderRadius: "5px",
-        border: " 1px solid gray",
       }}
     >
       {props.children}
-    </Box>
+    </Paper>
   );
 };

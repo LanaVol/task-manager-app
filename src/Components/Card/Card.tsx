@@ -102,9 +102,9 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
+            flexWrap="wrap"
             gap={1}
             sx={{
-              // border: "1px solid green",
               padding: "2px 6px",
             }}
           >
@@ -119,6 +119,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
               e.stopPropagation();
               setShowDropdown(true);
             }}
+            sx={{ position: "relative" }}
           >
             <IconButton aria-label="menu" color="inherit">
               <DragHandleRoundedIcon fontSize="inherit" />
@@ -129,9 +130,14 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
                   setShowDropdown(false);
                 }}
               >
-                <Box onClick={() => removeCard(boardId, id)}>
-                  <Button variant="contained">Delete Card</Button>
-                </Box>
+                <TitleBgCard
+                  onClick={() => removeCard(boardId, id)}
+                  sx={{ border: "none" }}
+                >
+                  <Button variant="text" color="inherit">
+                    Delete
+                  </Button>
+                </TitleBgCard>
               </Dropdown>
             )}
           </Box>

@@ -12,7 +12,6 @@ import { PublicRoute } from "./components/UserMenu/PublicRoute";
 import { LoginForm } from "./components/form/Login";
 import { RegisterForm } from "./components/form/Register";
 import { PrivateRoute } from "./components/UserMenu/PrivateRoute";
-// import { theme, mode } from "./components/style/styles/theme";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -43,6 +42,7 @@ function App() {
           color={"text.primary"}
           minHeight="100vh"
           className="App"
+          position="relative"
         >
           <Header setMode={setMode} mode={mode} />
           <Routes>

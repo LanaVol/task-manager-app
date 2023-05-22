@@ -1,9 +1,10 @@
 import { styled } from "@mui/material/styles";
 import { Paper, Box } from "@mui/material";
+import { Theme } from "@mui/material/styles";
 import { shadow } from "../GridItem/GridItem";
 import { blueGrey } from "@mui/material/colors";
 
-export const ItemAddBoardBtn = styled(Paper)(({ theme }) => ({
+export const ItemAddBoardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark"
       ? theme.palette.primary.dark
@@ -18,11 +19,7 @@ export const ItemAddBoardBtn = styled(Paper)(({ theme }) => ({
   zIndex: 10,
 }));
 
-export const ItemAddCardBtn = styled(Paper)(({ theme }) => ({
-  // backgroundColor:
-  //   theme.palette.mode === "dark"
-  //     ? theme.palette.primary.dark
-  //     : theme.palette.secondary.light,
+export const ItemAddCardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
   border:
     theme.palette.mode === "dark"
       ? `1px solid ${theme.palette.primary.dark}`
@@ -38,11 +35,9 @@ export const ItemAddCardBtn = styled(Paper)(({ theme }) => ({
     color: theme.palette.primary.contrastText,
   },
   transition: "all 100ms linear",
-  // color: theme.palette.primary.contrastText,
-  // padding: "5px",
 }));
 
-export const TitleBgBoard = styled(Box)(({ theme }) => ({
+export const TitleBgBoard = styled(Box)(({ theme }: { theme: Theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#00606425" : "#ff572220",
   borderBottom:
     theme.palette.mode === "dark" ? "2px solid #006064" : "2px solid #ff5722",
@@ -56,11 +51,7 @@ export const TitleBgCard = styled(Box)(({ theme }) => ({
   color: theme.palette.mode === "dark" ? "#ff3d00" : "#009688",
 }));
 
-export const ItemCardInfoBG = styled(Box)(({ theme }) => ({
-  // backgroundColor:
-  //   theme.palette.mode === "dark"
-  //     ? theme.palette.primary.dark
-  //     : theme.palette.primary.light,
+export const ItemCardInfoBG = styled(Box)(({ theme }: { theme: Theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark" ? blueGrey[900] : blueGrey[100],
   boxShadow: theme.palette.mode === "dark" ? shadow[1] : shadow[2],
@@ -71,10 +62,18 @@ export const ItemCardInfoBG = styled(Box)(({ theme }) => ({
       : theme.palette.secondary.contrastText,
 }));
 
-export const ItemCardInfo = styled(Paper)(({ theme }) => ({
+export const ItemCardInfo = styled(Paper)(() => ({
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "space-between",
   alignItems: "center",
   padding: "16px",
+}));
+
+export const WrapperBurgerMenu = styled(Box)(({ theme }: { theme: Theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.primary.dark
+      : theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
 }));
