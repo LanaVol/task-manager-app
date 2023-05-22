@@ -109,7 +109,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             }}
           >
             <NoteRoundedIcon color="inherit" fontSize="small" />
-            <Typography variant="h6" gutterBottom margin="0">
+            <Typography variant="h6" gutterBottom margin="0" fontSize="16px">
               {title}
             </Typography>
           </Box>
@@ -171,7 +171,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
         <Box display="flex" gap="10px" justifyContent="center" width="100%">
           <PlaylistAddCheckSharp color="primary" fontSize="medium" />
           {tasks && tasks?.length > 0 ? (
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom color="primary">
               {`${tasks?.filter((el) => el.completed)?.length}/${
                 tasks?.length
               } tasks`}
@@ -180,6 +180,7 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
             <Typography
               variant="subtitle1"
               gutterBottom
+              color="primary"
             >{`${tasks?.length} tasks`}</Typography>
           )}
         </Box>

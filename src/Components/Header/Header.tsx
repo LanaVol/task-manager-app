@@ -77,6 +77,7 @@ export const Header = ({ mode, setMode }: any) => {
             <Typography
               variant="h6"
               component="div"
+              textAlign={matches ? "center" : "left"}
               sx={{ flexGrow: 1, padding: "10px" }}
             >
               Task Manager App

@@ -6,6 +6,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
+import { ItemCardInfo } from "../style/styles/styles";
 
 export const RegisterForm = () => {
   const [error, setError] = useState("");
@@ -68,83 +69,87 @@ export const RegisterForm = () => {
         onSubmit={formik.handleSubmit}
         style={{
           maxWidth: "500px",
-          padding: "50px 30px",
-          border: "1px solid red",
           autoComplete: "off",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h5"
-          sx={{ flexGrow: 1, padding: "20px" }}
-        >
-          CREATE AN ACCOUNT
-        </Typography>
-        <TextField
-          sx={{ paddingBottom: "20px" }}
-          fullWidth
-          id="userName"
-          name="userName"
-          label="User Name"
-          value={formik.values.userName}
-          onChange={formik.handleChange}
-          error={formik.touched.userName && Boolean(formik.errors.userName)}
-          helperText={formik.touched.userName && formik.errors.userName}
-        />
-        <TextField
-          sx={{ paddingBottom: "20px" }}
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          sx={{ paddingBottom: "20px" }}
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-
-        <LoadingButton
-          color="primary"
-          variant="contained"
-          type="submit"
-          loading={loading}
-          endIcon={<SendIcon />}
-          loadingPosition="end"
-          sx={{ padding: "12px 30px" }}
-        >
-          <span>Submit</span>
-        </LoadingButton>
-
-        <Typography
-          variant="subtitle1"
-          component="p"
-          sx={{ flexGrow: 1, padding: "20px" }}
-        >
-          Have already an account? <Link to="/auth">Log in</Link>
-        </Typography>
-
-        {error ? (
+        <ItemCardInfo elevation={4} sx={{ padding: "50px 30px" }}>
           <Typography
-            variant="subtitle1"
-            component="p"
-            color="error"
+            variant="h5"
+            component="h5"
             sx={{ flexGrow: 1, padding: "20px" }}
           >
-            {error}
+            Create an Account
           </Typography>
-        ) : null}
+          <TextField
+            sx={{ paddingBottom: "20px" }}
+            fullWidth
+            id="userName"
+            name="userName"
+            label="User Name"
+            value={formik.values.userName}
+            onChange={formik.handleChange}
+            error={formik.touched.userName && Boolean(formik.errors.userName)}
+            helperText={formik.touched.userName && formik.errors.userName}
+          />
+          <TextField
+            sx={{ paddingBottom: "20px" }}
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextField
+            sx={{ paddingBottom: "20px" }}
+            fullWidth
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+          />
+
+          <LoadingButton
+            color="primary"
+            variant="contained"
+            type="submit"
+            loading={loading}
+            endIcon={<SendIcon />}
+            loadingPosition="end"
+            sx={{ padding: "12px 30px", margin: "0 auto" }}
+          >
+            <span>Submit</span>
+          </LoadingButton>
+
+          <Typography
+            variant="subtitle1"
+            component="p1"
+            width="100%"
+            sx={{ flexGrow: 1, padding: "20px" }}
+          >
+            Have already an account?{" "}
+            <Link to="/auth" style={{ color: "#00838f" }}>
+              Log in
+            </Link>
+          </Typography>
+
+          {error ? (
+            <Typography
+              variant="subtitle1"
+              component="p"
+              color="error"
+              sx={{ flexGrow: 1, padding: "20px" }}
+            >
+              {error}
+            </Typography>
+          ) : null}
+        </ItemCardInfo>
       </form>
     </Box>
   );

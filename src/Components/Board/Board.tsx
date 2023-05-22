@@ -56,7 +56,12 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             gap={1}
           >
             <NoteAltRoundedIcon color="inherit" fontSize="medium" />
-            <Typography variant="h5" gutterBottom sx={{ margin: "0" }}>
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{ margin: "0" }}
+              fontSize="20px"
+            >
               {board.title}
             </Typography>
           </Box>
@@ -138,7 +143,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         </Box>
       </Box>
 
-      {/* <Box> */}
       <ItemAddCardBtn>
         <CustomInput
           text="Add Card"
@@ -149,7 +153,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
           directionBtn="row"
         />
       </ItemAddCardBtn>
-      {/* </Box> */}
     </Box>
   );
 };
