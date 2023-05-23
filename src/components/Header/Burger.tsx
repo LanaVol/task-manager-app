@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import { Close, Menu as MenuIcon } from "@mui/icons-material";
+import React from "react";
+
 import {
-  Box,
   Drawer,
   List,
   Divider,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  Button,
 } from "@mui/material";
 import { WrapperBurgerMenu } from "../style/styles/styles";
 import { LogOut } from "./LogOut";

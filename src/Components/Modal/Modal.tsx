@@ -29,10 +29,7 @@ export const Modal = (props: any) => {
       >
         <ItemCardInfoBG
           sx={{
-            // maxWidth: "600px",
             padding: "36px 26px",
-            // maxHeight: "90vh",
-            // overflowY: "auto",
           }}
           onClick={(event: any) => event.stopPropagation()}
         >

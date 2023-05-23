@@ -6,6 +6,8 @@ export const Progress = () => {
   return (
     <Box
       sx={{
+        width: "100%",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

@@ -1,10 +1,9 @@
 import React, { useRef, useEffect } from "react";
-import { Box, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 
 export const Dropdown = (props: any) => {
   const dropdownRef: any = useRef(null);
 
-  console.log("props", props);
   const handleClick = (e: any) => {
     if (
       dropdownRef &&

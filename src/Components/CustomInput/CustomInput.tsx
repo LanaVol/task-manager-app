@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Paper, Box, Button, TextField, Stack } from "@mui/material";
-import { Add as Add, Close, Done } from "@mui/icons-material/";
-import IconButton from "@mui/material/IconButton";
+import { Paper, Box, Button, TextField, IconButton } from "@mui/material";
+import { Add, Close, Done } from "@mui/icons-material/";
 
 interface CustomInputProps {
   text?: string;
@@ -92,11 +91,9 @@ export const CustomInput = (props: CustomInputProps) => {
           </Box>
         </Paper>
       ) : (
-        // <Box sx={{}}>
         <Button
           fullWidth
           onClick={() => setIsCustomInput(true)}
-          // variant="contained"
           size="medium"
           color="inherit"
           sx={{
@@ -107,7 +104,6 @@ export const CustomInput = (props: CustomInputProps) => {
         >
           {text ? text : <Add />}
         </Button>
-        // </Box>
       )}
     </Box>
   );

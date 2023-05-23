@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, IconButton, Button } from "@mui/material";
-// import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
 import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
 import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
@@ -9,7 +8,7 @@ import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
 import { Dropdown } from "../Dropdown/Dropdown";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { grey, deepOrange } from "@mui/material/colors";
+import { deepOrange } from "@mui/material/colors";
 import { ItemAddCardBtn, TitleBgBoard } from "../style/styles/styles";
 
 interface BoardProps {

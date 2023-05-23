@@ -1,12 +1,13 @@
 import { React, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography, ImageListItem } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { ItemCardInfo } from "../style/styles/styles";
+import todolist from "../../image/todolist.jpeg";
 
 export const RegisterForm = () => {
   const [error, setError] = useState("");
@@ -80,6 +81,22 @@ export const RegisterForm = () => {
           >
             Create an Account
           </Typography>
+
+          <ImageListItem
+            sx={{
+              borderRadius: "10px",
+              overflow: "hidden",
+              maxWidth: "400px",
+              margin: "0 auto",
+              marginBottom: "20px",
+            }}
+          >
+            <img
+              src={todolist}
+              alt="Screen Saver"
+              sx={{ height: "100%", weight: "auto" }}
+            />
+          </ImageListItem>
           <TextField
             sx={{ paddingBottom: "20px" }}
             fullWidth

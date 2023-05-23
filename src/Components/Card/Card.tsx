@@ -18,7 +18,6 @@ import {
   CalendarMonthOutlined as CalendarMonthOutlinedIcon,
 } from "@mui/icons-material";
 import { TitleBgCard } from "../style/styles/styles";
-// import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 
 interface CardProps {
   card: CardItem;
@@ -148,7 +147,6 @@ export const Card: React.FC<CardProps> = (props: CardProps) => {
           gap={1}
           sx={{
             borderBottom: "1px solid #009688",
-            // borderRadius: "3px",
           }}
         >
           {" "}

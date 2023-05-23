@@ -11,14 +11,13 @@ import {
   Grid,
 } from "@mui/material";
 import {
-  Title as Title,
-  Description as Description,
-  CalendarMonth as CalendarMonth,
-  AssignmentTurnedIn as AssignmentTurnedIn,
-  Close as Close,
-  BookmarkBorder as BookmarkBorder,
-  Bookmark as Bookmark,
-  OutlinedFlag,
+  Title,
+  Description,
+  CalendarMonth,
+  AssignmentTurnedIn,
+  Close,
+  BookmarkBorder,
+  Bookmark,
 } from "@mui/icons-material/";
 import { DateCalendar } from "../Calendar/Calendar";
 import { colorList } from "../../data/dataUtility";
@@ -26,8 +25,6 @@ import { CustomInput } from "../CustomInput/CustomInput";
 import { Chip } from "../Common/Chip";
 import { ItemAddCardBtn, ItemCardInfo } from "../style/styles/styles";
 import { deepOrange } from "@mui/material/colors";
-// import { wrap } from "module";
-import { date } from "yup";
 
 interface CardInfoProps {
   card: CardItem;
@@ -104,17 +101,6 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, tasks });
   };
 
-  // const calculatePercent = () => {
-  //   if (!cardValues.tasks?.length) {
-  //     return 0;
-  //   }
-  //   const completed = cardValues.tasks?.filter(
-  //     (task) => task.completed
-  //   )?.length;
-  //   return (completed / cardValues.tasks?.length) * 100;
-  // };
-  // const calculatedPercent = calculatePercent();
-
   // ------------ update date
   const updateDate = (date: string) => {
     if (!date) {
@@ -125,8 +111,6 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
 
   // for checkbox MUI
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
-  // const [dense, setDense] = useState(false);
 
   useEffect(() => {
     if (updateCard) {
@@ -187,7 +171,6 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
                 <CustomInput
                   directionBtn={"row"}
                   text={"Edit Title"}
-                  // text={cardValues.title || "Edit Title"}
                   placeholder="Enter Title"
                   onClickAddBtn={updateTitle}
                 />
@@ -390,19 +373,6 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
               </ItemAddCardBtn>
             </Grid>
           </ItemCardInfo>
-          {/* <Box
-            sx={{ width: "fullwidth", height: "20px", border: "1px solid red" }}
-          >
-            <Box
-              sx={{
-                width: `${calculatedPercent}%`,
-                height: "10px",
-                backgroundColor: `${
-                  calculatedPercent === 100 ? "secondary" : ""
-                }`,
-              }}
-            />
-          </Box> */}
 
           <ItemCardInfo
             elevation={3}

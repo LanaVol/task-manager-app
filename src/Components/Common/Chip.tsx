@@ -1,6 +1,6 @@
 import React from "react";
 import { LabelItem } from "../../interfaces/DataTypes";
-import { Close as Close } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 interface ChipProps {
   el: LabelItem;

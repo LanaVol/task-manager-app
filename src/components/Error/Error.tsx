@@ -8,7 +8,6 @@ export const Error = ({ error }: any) => {
     <Box
       sx={{
         width: "100%",
-        // minWidth: "250px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
