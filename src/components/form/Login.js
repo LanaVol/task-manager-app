@@ -1,18 +1,35 @@
-import { React, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, TextField, Typography, ImageListItem } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  ImageListItem,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
+import { Visibility, VisibilityOff } from "@mui/icons-material/";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { ItemCardInfo } from "../style/styles/styles";
 import todolist from "../../image/todolist.jpeg";
 
 export const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
+  };
 
   const validationSchema = Yup.object({
     email: Yup.string("Enter your email")
@@ -63,10 +80,10 @@ export const LoginForm = () => {
       }}
     >
       <form
+        autoComplete="off"
         onSubmit={formik.handleSubmit}
         style={{
           maxWidth: "500px",
-          autoComplete: "off",
         }}
       >
         <ItemCardInfo elevation={4} sx={{ padding: "50px 30px" }}>
@@ -96,6 +113,7 @@ export const LoginForm = () => {
 
           <TextField
             sx={{ paddingBottom: "20px" }}
+            autoComplete="off"
             fullWidth
             id="email"
             name="email"
@@ -105,18 +123,48 @@ export const LoginForm = () => {
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
           />
-          <TextField
-            sx={{ paddingBottom: "20px" }}
-            fullWidth
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
+
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              autoComplete="off"
+              sx={{ marginBottom: "20px", backgroundColor: "inherit" }}
+            />
+          </FormControl>
+
+          <Typography
+            variant="subtitle2"
+            textAlign="left"
+            component="div"
+            width="100%"
+          >
+            User for test: <br />
+            e-mail: tester@gmail.com <br />
+            password: tester123
+          </Typography>
+
           <LoadingButton
             color="primary"
             variant="contained"
@@ -128,6 +176,7 @@ export const LoginForm = () => {
           >
             <span>Submit</span>
           </LoadingButton>
+
           <Typography
             variant="subtitle1"
             component="p"
