@@ -17,7 +17,7 @@ export const Progress = () => {
         left: "0",
         right: "0",
         backgroundColor: "#398d9032",
-        zIndex: 7,
+        zIndex: 25,
       }}
     >
       <CircularProgress />

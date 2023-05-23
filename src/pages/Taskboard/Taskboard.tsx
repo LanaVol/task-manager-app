@@ -8,7 +8,6 @@ import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
-import { AxiosError } from "axios";
 
 export const TaskBoard = ({ mode, theme }: any) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -234,7 +233,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       maxWidth="xl"
       sx={{
         padding: "20px 30px",
-        position: "relative",
         margin: "0 auto",
       }}
     >
