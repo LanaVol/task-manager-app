@@ -11,6 +11,7 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -160,12 +161,25 @@ export const RegisterForm = () => {
               label="Password"
               name="password"
               value={formik.values.password}
+              onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
               autoComplete="off"
-              sx={{ marginBottom: "20px", backgroundColor: "inherit" }}
+              sx={{ backgroundColor: "inherit" }}
             />
+            <FormHelperText
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              sx={{
+                visibility:
+                  formik.touched.password && formik.errors.password
+                    ? "visible"
+                    : "hidden",
+                height: "12px",
+                marginBottom: "10px",
+              }}
+            >
+              {formik.errors.password}
+            </FormHelperText>
           </FormControl>
 
           <LoadingButton
@@ -182,7 +196,7 @@ export const RegisterForm = () => {
 
           <Typography
             variant="subtitle1"
-            component="p1"
+            component="p"
             width="100%"
             sx={{ flexGrow: 1, padding: "20px" }}
           >
