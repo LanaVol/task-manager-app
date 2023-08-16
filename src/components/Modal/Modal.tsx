@@ -22,6 +22,7 @@ export const Modal = (props: any) => {
       <Box
         sx={{
           maxWidth: "600px",
+          minWidth: "40%",
           padding: "30px",
           maxHeight: "90vh",
           overflowY: "auto",

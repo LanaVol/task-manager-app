@@ -19,23 +19,25 @@ export const ItemAddBoardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
   zIndex: 10,
 }));
 
-export const ItemAddCardBtn = styled(Paper)(({ theme }: { theme: Theme }) => ({
-  border:
-    theme.palette.mode === "dark"
-      ? `1px solid ${theme.palette.primary.dark}`
-      : `1px solid ${theme.palette.secondary.light}`,
-  ...theme.typography.button,
-  textAlign: "center",
-  color:
-    theme.palette.mode === "dark"
-      ? theme.palette.primary.main
-      : theme.palette.secondary.main,
-  "&:hover": {
-    backgroundColor: theme.palette.mode === "dark" ? "#26a69a" : "#ff7043",
-    color: theme.palette.primary.contrastText,
-  },
-  transition: "all 100ms linear",
-}));
+export const ItemAddCardBtn: any = styled(Paper)(
+  ({ theme }: { theme: Theme }) => ({
+    border:
+      theme.palette.mode === "dark"
+        ? `1px solid ${theme.palette.primary.dark}`
+        : `1px solid ${theme.palette.secondary.light}`,
+    ...theme.typography.button,
+    textAlign: "center",
+    color:
+      theme.palette.mode === "dark"
+        ? theme.palette.primary.main
+        : theme.palette.secondary.main,
+    "&:hover": {
+      backgroundColor: theme.palette.mode === "dark" ? "#26a69a" : "#ff7043",
+      color: theme.palette.primary.contrastText,
+    },
+    transition: "all 100ms linear",
+  })
+);
 
 export const TitleBgBoard = styled(Box)(({ theme }: { theme: Theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#00606425" : "#ff572220",

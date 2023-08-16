@@ -44,7 +44,7 @@ export const CustomInput = (props: CustomInputProps) => {
           elevation={1}
           sx={{
             width: "100%",
-            padding: "20px",
+            padding: "18px",
             display: "flex",
             justifyContent: "center",
             gap: 1,

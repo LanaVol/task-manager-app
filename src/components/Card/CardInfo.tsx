@@ -25,6 +25,8 @@ import { CustomInput } from "../CustomInput/CustomInput";
 import { Chip } from "../Common/Chip";
 import { ItemAddCardBtn, ItemCardInfo } from "../style/styles/styles";
 import { deepOrange } from "@mui/material/colors";
+import ItemIconText from "./ItemIconText";
+import CardInfoItem from "./CardInfoItem";
 
 interface CardInfoProps {
   card: CardItem;
@@ -142,7 +144,173 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
         </IconButton>
       </Box>
 
-      <Grid container rowSpacing={1}>
+      <CardInfoItem>
+        <ItemIconText Component={Title} info={cardValues.title} />
+
+        <ItemAddCardBtn>
+          <CustomInput
+            directionBtn={"row"}
+            text={"Edit Title"}
+            placeholder="Enter Title"
+            onClickAddBtn={updateTitle}
+          />
+        </ItemAddCardBtn>
+      </CardInfoItem>
+
+      <CardInfoItem>
+        <ItemIconText
+          Component={Description}
+          info={cardValues.desc || "Description"}
+        />
+
+        <ItemAddCardBtn>
+          <CustomInput
+            directionBtn={"row"}
+            defaultValue={cardValues.desc}
+            text={"Edit a Description"}
+            placeholder="Enter Description"
+            onClickAddBtn={updateDescript}
+          />
+        </ItemAddCardBtn>
+      </CardInfoItem>
+
+      <CardInfoItem>
+        <ItemIconText Component={CalendarMonth} info="Date" />
+        <DateCalendar updateDate={updateDate} />
+      </CardInfoItem>
+
+      <CardInfoItem>
+        <ItemIconText Component={BookmarkBorder} info="Labels" />
+        <Box
+          width="fit-content"
+          display="flex"
+          flexWrap="wrap"
+          gap="7px"
+          marginBottom="1rem"
+        >
+          {cardValues.labels?.map((el, index) => (
+            <Chip key={index} el={el} removeLabel={removeLabel} />
+          ))}
+        </Box>
+
+        <Grid container>
+          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+            {colorList.map((color, index) => (
+              <ListItemIcon
+                key={index}
+                onClick={() => setSelectedColor(color)}
+                sx={{
+                  minWidth: "15px",
+                  border: "1px solid #bf360c50",
+                  borderRadius: "15px",
+                  padding: "2px",
+                  margin: "2px",
+                  cursor: "pointer",
+                  "&:hover": {
+                    boxShadow: "0px 4px 6px #bf360c50, -2px -4px 6px #bf360c50",
+                  },
+                }}
+              >
+                <Bookmark sx={{ backgroundColor: { color } }} />
+              </ListItemIcon>
+            ))}
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+            <ItemAddCardBtn>
+              <CustomInput
+                directionBtn={"row"}
+                text="Add Label"
+                placeholder="Enter label text"
+                onClickAddBtn={(value: string) =>
+                  addLabel({ color: selectedColor, text: value })
+                }
+              />
+            </ItemAddCardBtn>
+          </Grid>
+        </Grid>
+      </CardInfoItem>
+
+      <CardInfoItem>
+        <ItemIconText
+          Component={AssignmentTurnedIn}
+          info={`Tasks: ${cardValues.tasks.length}`}
+        />
+        <ItemAddCardBtn>
+          <CustomInput
+            directionBtn={"row"}
+            text={"Add New Task"}
+            placeholder="Enter Task"
+            onClickAddBtn={addTask}
+          />
+        </ItemAddCardBtn>
+      </CardInfoItem>
+
+      <ItemCardInfo
+        elevation={3}
+        sx={{
+          maxHeight: "150px",
+          overflow: "hidden",
+          "&:hover": { overflowY: "scroll" },
+          "&::-webkit-scrollbar": {
+            width: "7px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: deepOrange["A400"],
+            borderRadius: "5px",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: deepOrange["100"],
+          },
+        }}
+      >
+        {cardValues.tasks?.map((el) => (
+          <Paper
+            elevation={1}
+            key={el.id}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "3px",
+              marginBottom: "5px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Checkbox
+                {...label}
+                checked={el.completed}
+                onChange={(e) => checkDoneTask(el.id, e.target.checked)}
+              />
+              <Typography
+                variant="subtitle1"
+                align="left"
+                sx={{
+                  textDecoration: el.completed ? "line-through" : "none",
+                }}
+              >
+                {el.text}
+              </Typography>
+            </Box>
+
+            <IconButton
+              aria-label="close"
+              color="secondary"
+              onClick={() => removeTask(el.id)}
+            >
+              <Close fontSize="medium" />
+            </IconButton>
+          </Paper>
+        ))}
+      </ItemCardInfo>
+
+      {/* <Grid container rowSpacing={1}>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <ItemCardInfo elevation={3}>
             <Grid item xs={12} sm={7.5} md={7.5} lg={7.5} xl={7.5}>
@@ -438,7 +606,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
             ))}
           </ItemCardInfo>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Modal>
   );
 };
