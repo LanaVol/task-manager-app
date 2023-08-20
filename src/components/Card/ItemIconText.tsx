@@ -1,7 +1,12 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
-const ItemIconText = ({ Component, info }) => {
+interface ItemIconTextProps {
+  Component: any;
+  info: string;
+}
+
+const ItemIconText = ({ Component, info }: ItemIconTextProps): JSX.Element => {
   return (
     <Box>
       <Box
