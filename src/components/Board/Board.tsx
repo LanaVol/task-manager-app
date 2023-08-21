@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
-import DragHandleRoundedIcon from "@mui/icons-material/DragHandleRounded";
-import NoteRoundedIcon from "@mui/icons-material/NoteRounded";
-import NoteAltRoundedIcon from "@mui/icons-material/NoteAltRounded";
+import {
+  HighlightOffOutlined as HighlightOffOutlinedIcon,
+  DragHandleRounded as DragHandleRoundedIcon,
+  NoteRounded as NoteRoundedIcon,
+  NoteAltRounded as NoteAltRoundedIcon,
+} from "@mui/icons-material";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { Card } from "../Card/Card";
@@ -95,14 +98,22 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             </IconButton>
 
             {showDropdown && (
-              <Dropdown
-              // onClose={() => setShowDropdown(false)}
-              >
-                <TitleBgBoard sx={{ border: "none", width: "fit-content" }}>
-                  <Button onClick={() => setShowDropdown(false)}>X</Button>
+              <Dropdown>
+                <TitleBgBoard
+                  sx={{
+                    border: "none",
+                  }}
+                >
+                  <Box>
+                    <IconButton
+                      onClick={() => setShowDropdown(false)}
+                      color="inherit"
+                    >
+                      <HighlightOffOutlinedIcon />
+                    </IconButton>
+                  </Box>
 
                   <Button
-                    variant="text"
                     color="inherit"
                     fullWidth
                     onClick={() => {
@@ -114,20 +125,18 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
                   <Box
                     sx={{
-                      minWidth: "200px",
+                      minWidth: "180px",
                     }}
                   >
-                    <ItemAddCardBtn>
-                      <CustomInput
-                        text="Update Board Name"
-                        placeholder="Enter Board Title"
-                        onClickAddBtn={(value: string) => {
-                          updateBoardName(board?.id, value);
-                          setShowDropdown(false);
-                        }}
-                        directionBtn="row"
-                      />
-                    </ItemAddCardBtn>
+                    <CustomInput
+                      text="Rename Title"
+                      placeholder="Enter Board Title"
+                      onClickAddBtn={(value: string) => {
+                        updateBoardName(board?.id, value);
+                        setShowDropdown(false);
+                      }}
+                      directionBtn="row"
+                    />
                   </Box>
                 </TitleBgBoard>
               </Dropdown>

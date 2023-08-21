@@ -8,55 +8,74 @@ import { BoardItem, CardItem } from "../../interfaces/DataTypes";
 import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBoards, addNewBoard } from "../../redux/board/board.operations";
+import { string } from "yup";
 
 export const TaskBoard = ({ mode, theme }: any) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [boards, setBoards] = useState<BoardItem[]>([]);
+  const [isLoading222, setIsLoading] = useState(false);
+  const [error222, setError] = useState("");
+  const [boards222, setBoards] = useState<BoardItem[]>([]);
   const [targetCard, setTargetCard] = useState({
     boardId: 0,
     cardId: 0,
   });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const { data } = await TaskService.getBoards();
+  const dispatch = useDispatch();
+  const boards = useSelector((state: any) => state.boards.boards);
+  const isLoading = useSelector((state: any) => state.boards.isLoading);
+  const error = useSelector((state: any) => state.boards.error);
 
-        if (data) setBoards(data[0]?.boards);
-      } catch (e: any) {
-        setError(e.response?.data?.message || "Network Error");
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(fetchBoards());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const { data } = await TaskService.getBoards();
+
+  //       if (data) setBoards(data[0]?.boards);
+  //     } catch (e: any) {
+  //       setError(e.response?.data?.message || "Network Error");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   })();
+  // }, []);
+
+  const addBoardHandler = (boardTitle: string) => {
+    const newBoard = {
+      title: boardTitle,
+      cards: [],
+    };
+    // @ts-ignore
+    dispatch(addNewBoard(newBoard));
+  };
 
   // adding new board
-  const addBoardHandler = async (boardTitle: string) => {
-    try {
-      setIsLoading(true);
-      const { data } = await TaskService.addBoard({
-        title: boardTitle,
-        cards: [],
-      });
-      if (data) setBoards([...boards, data]);
-    } catch (e: any) {
-      setError(e.response?.data?.message || "Network Error");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const addBoardHandler = async (boardTitle: string) => {
+  //   try {
+  //     setIsLoading(true);
+  //     const { data } = await TaskService.addBoard({
+  //       title: boardTitle,
+  //       cards: [],
+  //     });
+  //     if (data) setBoards([...boards, data]);
+  //   } catch (e: any) {
+  //     setError(e.response?.data?.message || "Network Error");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // update board title
   const updateBoardName = async (boardId: number, value: string) => {
     setIsLoading(true);
     const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
     if (boardIndex === -1) return;
-
-    console.log("@BoardID" + boardId);
-    console.log("@value " + value);
 
     const updatedBoard = { ...boards[boardIndex] };
     updatedBoard.title = value;
@@ -65,7 +84,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       boardId,
       board: updatedBoard,
     });
-    const updatedListBoard = boards.map((el) => {
+    const updatedListBoard = boards.map((el: any) => {
       if (el.id === data.id) {
         el = data;
       }
@@ -80,7 +99,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
     setIsLoading(true);
     try {
       const { data } = await TaskService.deleteBoard(boardId);
-      const updatedBoardList = boards.filter((board) => board.id !== data);
+      const updatedBoardList = boards.filter((board: any) => board.id !== data);
       setBoards(updatedBoardList);
     } catch (err: any) {
       setError(err.message);
@@ -110,7 +129,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       board: tempBoardList[boardIndex],
     });
 
-    const updatedListBoard = boards.map((el) => {
+    const updatedListBoard = boards.map((el: any) => {
       if (el.id === data.id) {
         el = data;
       }
@@ -131,7 +150,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
     const updatedBoard = { ...boards[boardIndex] };
 
     updatedBoard.cards = updatedBoard.cards.filter(
-      (card) => card.id !== cardId
+      (card: any) => card.id !== cardId
     );
 
     const { data } = await TaskService.updateBoard({
@@ -139,7 +158,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       board: updatedBoard,
     });
 
-    const updatedListBoard = boards.map((el) => {
+    const updatedListBoard = boards.map((el: any) => {
       if (el.id === data.id) {
         el = data;
       }
@@ -156,14 +175,14 @@ export const TaskBoard = ({ mode, theme }: any) => {
     card: CardItem
   ) => {
     setIsLoading(true);
-    const boardIndex = boards.findIndex((el) => {
+    const boardIndex = boards.findIndex((el: any) => {
       return el.id === boardId;
     });
     if (boardIndex === -1) return;
 
     const updatedBoard = { ...boards[boardIndex] };
     const cards = updatedBoard.cards;
-    const cardIndex = cards.findIndex((el) => {
+    const cardIndex = cards.findIndex((el: any) => {
       return el.id === cardId;
     });
     if (cardIndex === -1) return;
@@ -174,7 +193,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       boardId,
       board: updatedBoard,
     });
-    const updatedListBoard = boards.map((el) => {
+    const updatedListBoard = boards.map((el: any) => {
       if (el.id === data.id) {
         el = data;
       }
@@ -234,7 +253,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       }),
     ]);
 
-    const updateBoardList = boards.map((board) => {
+    const updateBoardList = boards.map((board: any) => {
       if (board.id === board1.data.id) {
         return board1.data;
       }
@@ -266,7 +285,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
         {isLoading ? <Progress /> : null}
         {error ? <Error error={error} /> : null}
         {boards?.length > 0 &&
-          boards.map((board) => (
+          boards?.map((board: any) => (
             <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={board.id}>
               <GridItem>
                 <Board

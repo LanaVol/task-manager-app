@@ -50,7 +50,7 @@ export const RegisterForm = () => {
     initialValues: { userName: "", email: "", password: "" },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      // console.log(JSON.stringify(values, null, 2));
 
       async function fetchAuth() {
         try {

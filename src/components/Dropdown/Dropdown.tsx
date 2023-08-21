@@ -31,6 +31,7 @@ export const Dropdown = (props: any) => {
         width: "fit-content",
         display: "flex",
         flexDirection: "column",
+        gap: "0.2rem",
         position: "absolute",
         top: "36px",
         right: 0,
