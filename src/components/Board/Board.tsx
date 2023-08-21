@@ -19,6 +19,7 @@ interface BoardProps {
   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
   onDragEnd: (boardId: number, cardId: number) => void;
   onDragEnter: (boardId: number, cardId: number) => void;
+  updateBoardName: (boardId: number, value: string) => Promise<void>;
 }
 
 export const Board: React.FC<BoardProps> = (props: BoardProps) => {
@@ -30,6 +31,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     updateCard,
     onDragEnd,
     onDragEnter,
+    updateBoardName,
   } = props;
   const [showDropdown, setShowDropdown] = useState(false);
   const matches = useMediaQuery("(min-width:600px)");
@@ -93,21 +95,46 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             </IconButton>
 
             {showDropdown && (
-              <Dropdown onClose={() => setShowDropdown(false)}>
-                <TitleBgBoard
-                  sx={{ border: "none" }}
-                  onClick={() => {
-                    removeBoard(board?.id);
-                  }}
-                >
-                  <Button variant="text" color="inherit">
+              <Dropdown
+              // onClose={() => setShowDropdown(false)}
+              >
+                <TitleBgBoard sx={{ border: "none", width: "fit-content" }}>
+                  <Button onClick={() => setShowDropdown(false)}>X</Button>
+
+                  <Button
+                    variant="text"
+                    color="inherit"
+                    fullWidth
+                    onClick={() => {
+                      removeBoard(board?.id);
+                    }}
+                  >
                     Delete Board
                   </Button>
+
+                  <Box
+                    sx={{
+                      minWidth: "200px",
+                    }}
+                  >
+                    <ItemAddCardBtn>
+                      <CustomInput
+                        text="Update Board Name"
+                        placeholder="Enter Board Title"
+                        onClickAddBtn={(value: string) => {
+                          updateBoardName(board?.id, value);
+                          setShowDropdown(false);
+                        }}
+                        directionBtn="row"
+                      />
+                    </ItemAddCardBtn>
+                  </Box>
                 </TitleBgBoard>
               </Dropdown>
             )}
           </Box>
         </TitleBgBoard>
+
         <Box
           sx={{
             padding: "7px",

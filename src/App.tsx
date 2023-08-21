@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import "./App.css";
 import { Header } from "./components/Header/Header";
 import { TaskBoard } from "./pages/Taskboard/Taskboard";
@@ -12,6 +11,7 @@ import { PublicRoute } from "./components/UserMenu/PublicRoute";
 import { LoginForm } from "./components/form/Login";
 import { RegisterForm } from "./components/form/Register";
 import { PrivateRoute } from "./components/UserMenu/PrivateRoute";
+import bg from "../src/image/svg/bground.svg";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -43,6 +43,11 @@ function App() {
           minHeight="100vh"
           className="App"
           position="relative"
+          sx={{
+            backgroundImage: `url(${bg})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
         >
           <Header setMode={setMode} mode={mode} />
           <Routes>

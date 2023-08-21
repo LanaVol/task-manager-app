@@ -49,6 +49,32 @@ export const TaskBoard = ({ mode, theme }: any) => {
     }
   };
 
+  // update board title
+  const updateBoardName = async (boardId: number, value: string) => {
+    setIsLoading(true);
+    const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
+    if (boardIndex === -1) return;
+
+    console.log("@BoardID" + boardId);
+    console.log("@value " + value);
+
+    const updatedBoard = { ...boards[boardIndex] };
+    updatedBoard.title = value;
+
+    const { data } = await TaskService.updateBoard({
+      boardId,
+      board: updatedBoard,
+    });
+    const updatedListBoard = boards.map((el) => {
+      if (el.id === data.id) {
+        el = data;
+      }
+      return el;
+    });
+    setBoards(updatedListBoard);
+    setIsLoading(false);
+  };
+
   // remove current board
   const removeBoard = async (boardId: number) => {
     setIsLoading(true);
@@ -251,6 +277,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
                   updateCard={updateCard}
                   onDragEnd={onDragEnd}
                   onDragEnter={onDragEnter}
+                  updateBoardName={updateBoardName}
                 />
               </GridItem>
             </Grid>
