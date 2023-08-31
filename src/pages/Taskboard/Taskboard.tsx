@@ -9,7 +9,12 @@ import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBoards, addNewBoard } from "../../redux/board/board.operations";
+import {
+  fetchBoards,
+  addNewBoard,
+  removeBoard,
+  updateBoardTitle,
+} from "../../redux/board/board.operations";
 import { string } from "yup";
 
 export const TaskBoard = ({ mode, theme }: any) => {
@@ -72,42 +77,56 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // };
 
   // update board title
-  const updateBoardName = async (boardId: number, value: string) => {
-    setIsLoading(true);
+  const updateBoardNameHandler = (boardId: number, value: string) => {
     const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
     if (boardIndex === -1) return;
-
     const updatedBoard = { ...boards[boardIndex] };
     updatedBoard.title = value;
-
-    const { data } = await TaskService.updateBoard({
-      boardId,
-      board: updatedBoard,
-    });
-    const updatedListBoard = boards.map((el: any) => {
-      if (el.id === data.id) {
-        el = data;
-      }
-      return el;
-    });
-    setBoards(updatedListBoard);
-    setIsLoading(false);
+    console.log(boardId, updatedBoard);
+    // @ts-ignore
+    dispatch(updateBoardTitle({ boardId, board: updatedBoard }));
   };
+  // const updateBoardName = async (boardId: number, value: string) => {
+  //   setIsLoading(true);
+  //   const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
+  //   if (boardIndex === -1) return;
+
+  //   const updatedBoard = { ...boards[boardIndex] };
+  //   updatedBoard.title = value;
+
+  //   const { data } = await TaskService.updateBoard({
+  //     boardId,
+  //     board: updatedBoard,
+  //   });
+  //   const updatedListBoard = boards.map((el: any) => {
+  //     if (el.id === data.id) {
+  //       el = data;
+  //     }
+  //     return el;
+  //   });
+  //   setBoards(updatedListBoard);
+  //   setIsLoading(false);
+  // };
 
   // remove current board
-  const removeBoard = async (boardId: number) => {
-    setIsLoading(true);
-    try {
-      const { data } = await TaskService.deleteBoard(boardId);
-      const updatedBoardList = boards.filter((board: any) => board.id !== data);
-      setBoards(updatedBoardList);
-    } catch (err: any) {
-      setError(err.message);
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
+  const removeBoardHandler = (boardId: number) => {
+    console.log(boardId);
+    // @ts-ignore
+    dispatch(removeBoard(boardId));
   };
+  // const removeBoard = async (boardId: number) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { data } = await TaskService.deleteBoard(boardId);
+  //     const updatedBoardList = boards.filter((board: any) => board.id !== data);
+  //     setBoards(updatedBoardList);
+  //   } catch (err: any) {
+  //     setError(err.message);
+  //     console.log(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // adding new card to current board
   const addCardHandler = async (boardId: number, cardTitle: string) => {
@@ -291,12 +310,13 @@ export const TaskBoard = ({ mode, theme }: any) => {
                 <Board
                   board={board}
                   addCard={addCardHandler}
-                  removeBoard={() => removeBoard(board.id)}
+                  removeBoard={() => removeBoardHandler(board.id)}
                   removeCard={removeCard}
                   updateCard={updateCard}
                   onDragEnd={onDragEnd}
                   onDragEnter={onDragEnter}
-                  updateBoardName={updateBoardName}
+                  // @ts-ignore
+                  updateBoardName={updateBoardNameHandler}
                 />
               </GridItem>
             </Grid>

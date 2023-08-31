@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchBoards, addNewBoard } from "./board.operations";
+import {
+  fetchBoards,
+  addNewBoard,
+  removeBoard,
+  updateBoardTitle,
+} from "./board.operations";
 
 const initialState = {
   boards: [],
@@ -33,6 +38,35 @@ export const boardsSlice = createSlice({
       state.boards = [...state.boards, action.payload];
     });
     builder.addCase(addNewBoard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(removeBoard.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(removeBoard.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.boards = state.boards.filter(
+        (board) => board.id !== action.payload
+      );
+    });
+    builder.addCase(removeBoard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updateBoardTitle.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateBoardTitle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.boards = state.boards.map((board) => {
+        if (board.id === action.payload.id) return action.payload;
+        return board;
+      });
+    });
+    builder.addCase(updateBoardTitle.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
