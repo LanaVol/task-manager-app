@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import TaskService from "../../services/TaskService";
 import { AxiosError } from "axios";
-import { number } from "yup";
 
 export const fetchBoards = createAsyncThunk(
   "boards/fetchBoards",
@@ -56,7 +55,60 @@ export const updateBoardTitle = createAsyncThunk(
         boardId,
         board,
       });
-      console.log(data);
+      return data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue(
+        err.message || "An error occurred with the network"
+      );
+    }
+  }
+);
+
+export const addNewCard = createAsyncThunk(
+  "boards/addNewCard",
+  async ({ boardId, board }: any, { rejectWithValue }) => {
+    try {
+      const { data } = await TaskService.updateBoard({
+        boardId,
+        board,
+      });
+      return data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue(
+        err.message || "An error occurred with the network"
+      );
+    }
+  }
+);
+
+export const removeCard = createAsyncThunk(
+  "boards/removeCard",
+  async ({ boardId, board }: any, { rejectWithValue }) => {
+    try {
+      const { data } = await TaskService.updateBoard({
+        boardId,
+        board,
+      });
+      return data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue(
+        err.message || "An error occurred with the network"
+      );
+    }
+  }
+);
+
+export const updateCard = createAsyncThunk(
+  "boards/updateCard",
+  async ({ boardId, board }: any, { rejectWithValue }) => {
+    try {
+      const { data } = await TaskService.updateBoard({
+        boardId,
+        board,
+      });
       return data;
     } catch (error) {
       const err = error as AxiosError;

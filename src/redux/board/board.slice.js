@@ -4,6 +4,9 @@ import {
   addNewBoard,
   removeBoard,
   updateBoardTitle,
+  addNewCard,
+  removeCard,
+  updateCard,
 } from "./board.operations";
 
 const initialState = {
@@ -67,6 +70,51 @@ export const boardsSlice = createSlice({
       });
     });
     builder.addCase(updateBoardTitle.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(addNewCard.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(addNewCard.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.boards = state.boards.map((board) => {
+        if (board.id === action.payload.id) return action.payload;
+        return board;
+      });
+    });
+    builder.addCase(addNewCard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(removeCard.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(removeCard.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.boards = state.boards.map((board) => {
+        if (board.id === action.payload.id) return action.payload;
+        return board;
+      });
+    });
+    builder.addCase(removeCard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updateCard.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateCard.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.boards = state.boards.map((board) => {
+        if (board.id === action.payload.id) return action.payload;
+        return board;
+      });
+    });
+    builder.addCase(updateCard.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

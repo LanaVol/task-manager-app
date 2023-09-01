@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Board } from "../../components/Board/Board";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { GridItem } from "../../components/style/GridItem/GridItem";
@@ -14,6 +14,9 @@ import {
   addNewBoard,
   removeBoard,
   updateBoardTitle,
+  addNewCard,
+  removeCard,
+  updateCard,
 } from "../../redux/board/board.operations";
 import { string } from "yup";
 
@@ -51,14 +54,17 @@ export const TaskBoard = ({ mode, theme }: any) => {
   //   })();
   // }, []);
 
-  const addBoardHandler = (boardTitle: string) => {
-    const newBoard = {
-      title: boardTitle,
-      cards: [],
-    };
-    // @ts-ignore
-    dispatch(addNewBoard(newBoard));
-  };
+  const addBoardHandler = useCallback(
+    (boardTitle: string) => {
+      const newBoard = {
+        title: boardTitle,
+        cards: [],
+      };
+      // @ts-ignore
+      dispatch(addNewBoard(newBoard));
+    },
+    [dispatch]
+  );
 
   // adding new board
   // const addBoardHandler = async (boardTitle: string) => {
@@ -77,15 +83,18 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // };
 
   // update board title
-  const updateBoardNameHandler = (boardId: number, value: string) => {
-    const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
-    if (boardIndex === -1) return;
-    const updatedBoard = { ...boards[boardIndex] };
-    updatedBoard.title = value;
-    console.log(boardId, updatedBoard);
-    // @ts-ignore
-    dispatch(updateBoardTitle({ boardId, board: updatedBoard }));
-  };
+  const updateBoardNameHandler = useCallback(
+    (boardId: number, value: string) => {
+      const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
+      if (boardIndex === -1) return;
+      const updatedBoard = { ...boards[boardIndex] };
+      updatedBoard.title = value;
+      console.log(boardId, updatedBoard);
+      // @ts-ignore
+      dispatch(updateBoardTitle({ boardId, board: updatedBoard }));
+    },
+    [dispatch, boards]
+  );
   // const updateBoardName = async (boardId: number, value: string) => {
   //   setIsLoading(true);
   //   const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
@@ -109,11 +118,13 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // };
 
   // remove current board
-  const removeBoardHandler = (boardId: number) => {
-    console.log(boardId);
-    // @ts-ignore
-    dispatch(removeBoard(boardId));
-  };
+  const removeBoardHandler = useCallback(
+    (boardId: number) => {
+      // @ts-ignore
+      dispatch(removeBoard(boardId));
+    },
+    [dispatch]
+  );
   // const removeBoard = async (boardId: number) => {
   //   setIsLoading(true);
   //   try {
@@ -129,98 +140,153 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // };
 
   // adding new card to current board
-  const addCardHandler = async (boardId: number, cardTitle: string) => {
-    setIsLoading(true);
-    const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
-    if (boardIndex === -1) return;
+  const addCardHandler = useCallback(
+    (boardId: number, cardTitle: string) => {
+      const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
+      if (boardIndex === -1) return;
 
-    const tempBoardList = [...boards];
-    tempBoardList[boardIndex].cards.push({
-      id: Date.now() + Math.random() * 2,
-      title: cardTitle,
-      labels: [],
-      date: "",
-      tasks: [],
-    });
+      const tempBoardList = JSON.parse(JSON.stringify(boards));
+      tempBoardList[boardIndex].cards.push({
+        id: Date.now() + Math.random() * 2,
+        title: cardTitle,
+        labels: [],
+        date: "",
+        tasks: [],
+      });
 
-    const { data } = await TaskService.updateBoard({
-      boardId,
-      board: tempBoardList[boardIndex],
-    });
+      // @ts-ignore
+      dispatch(addNewCard({ boardId, board: tempBoardList[boardIndex] }));
+    },
+    [dispatch, boards]
+  );
+  // const addCardHandler = async (boardId: number, cardTitle: string) => {
+  //   setIsLoading(true);
+  //   const boardIndex = boards.findIndex((el: BoardItem) => el.id === boardId);
+  //   if (boardIndex === -1) return;
 
-    const updatedListBoard = boards.map((el: any) => {
-      if (el.id === data.id) {
-        el = data;
-      }
-      return el;
-    });
-    setBoards(updatedListBoard);
-    setIsLoading(false);
-  };
+  //   const tempBoardList = [...boards];
+  //   tempBoardList[boardIndex].cards.push({
+  //     id: Date.now() + Math.random() * 2,
+  //     title: cardTitle,
+  //     labels: [],
+  //     date: "",
+  //     tasks: [],
+  //   });
+
+  //   const { data } = await TaskService.updateBoard({
+  //     boardId,
+  //     board: tempBoardList[boardIndex],
+  //   });
+
+  //   const updatedListBoard = boards.map((el: any) => {
+  //     if (el.id === data.id) {
+  //       el = data;
+  //     }
+  //     return el;
+  //   });
+  //   setBoards(updatedListBoard);
+  //   setIsLoading(false);
+  // };
 
   // remove current card
-  const removeCard = async (boardId: number, cardId: number) => {
-    setIsLoading(true);
-    const boardIndex = boards.findIndex((el: BoardItem) => {
-      return el.id === boardId;
-    });
-    if (boardIndex === -1) return;
+  const removeCardHandler = useCallback(
+    (boardId: number, cardId: number) => {
+      const boardIndex = boards.findIndex((el: BoardItem) => {
+        return el.id === boardId;
+      });
+      if (boardIndex === -1) return;
+      const updatedBoard = { ...boards[boardIndex] };
+      updatedBoard.cards = updatedBoard.cards.filter(
+        (card: any) => card.id !== cardId
+      );
+      // @ts-ignore
+      dispatch(removeCard({ boardId, board: updatedBoard }));
+    },
+    [dispatch, boards]
+  );
+  // const removeCard = async (boardId: number, cardId: number) => {
+  //   setIsLoading(true);
+  //   const boardIndex = boards.findIndex((el: BoardItem) => {
+  //     return el.id === boardId;
+  //   });
+  //   if (boardIndex === -1) return;
 
-    const updatedBoard = { ...boards[boardIndex] };
+  //   const updatedBoard = { ...boards[boardIndex] };
 
-    updatedBoard.cards = updatedBoard.cards.filter(
-      (card: any) => card.id !== cardId
-    );
+  //   updatedBoard.cards = updatedBoard.cards.filter(
+  //     (card: any) => card.id !== cardId
+  //   );
 
-    const { data } = await TaskService.updateBoard({
-      boardId,
-      board: updatedBoard,
-    });
+  //   const { data } = await TaskService.updateBoard({
+  //     boardId,
+  //     board: updatedBoard,
+  //   });
 
-    const updatedListBoard = boards.map((el: any) => {
-      if (el.id === data.id) {
-        el = data;
-      }
-      return el;
-    });
-    setBoards(updatedListBoard);
-    setIsLoading(false);
-  };
+  //   const updatedListBoard = boards.map((el: any) => {
+  //     if (el.id === data.id) {
+  //       el = data;
+  //     }
+  //     return el;
+  //   });
+  //   setBoards(updatedListBoard);
+  //   setIsLoading(false);
+  // };
 
   // update current card
-  const updateCard = async (
-    boardId: number,
-    cardId: number,
-    card: CardItem
-  ) => {
-    setIsLoading(true);
-    const boardIndex = boards.findIndex((el: any) => {
-      return el.id === boardId;
-    });
-    if (boardIndex === -1) return;
+  const updateCardHandler = useCallback(
+    (boardId: number, cardId: number, card: CardItem) => {
+      const boardIndex = boards.findIndex((el: any) => {
+        return el.id === boardId;
+      });
+      if (boardIndex === -1) return;
 
-    const updatedBoard = { ...boards[boardIndex] };
-    const cards = updatedBoard.cards;
-    const cardIndex = cards.findIndex((el: any) => {
-      return el.id === cardId;
-    });
-    if (cardIndex === -1) return;
+      const updatedBoard = JSON.parse(JSON.stringify(boards[boardIndex]));
+      const cards = updatedBoard.cards;
+      const cardIndex = cards.findIndex((el: any) => {
+        return el.id === cardId;
+      });
+      if (cardIndex === -1) return;
 
-    updatedBoard.cards[cardIndex] = card;
+      updatedBoard.cards[cardIndex] = card;
+      console.log(updatedBoard);
+      // @ts-ignore
+      dispatch(updateCard({ boardId, board: updatedBoard }));
+    },
+    [dispatch, boards]
+  );
+  // const updateCard = async (
+  //   boardId: number,
+  //   cardId: number,
+  //   card: CardItem
+  // ) => {
+  //   setIsLoading(true);
+  //   const boardIndex = boards.findIndex((el: any) => {
+  //     return el.id === boardId;
+  //   });
+  //   if (boardIndex === -1) return;
 
-    const { data } = await TaskService.updateBoard({
-      boardId,
-      board: updatedBoard,
-    });
-    const updatedListBoard = boards.map((el: any) => {
-      if (el.id === data.id) {
-        el = data;
-      }
-      return el;
-    });
-    setBoards(updatedListBoard);
-    setIsLoading(false);
-  };
+  //   const updatedBoard = { ...boards[boardIndex] };
+  //   const cards = updatedBoard.cards;
+  //   const cardIndex = cards.findIndex((el: any) => {
+  //     return el.id === cardId;
+  //   });
+  //   if (cardIndex === -1) return;
+
+  //   updatedBoard.cards[cardIndex] = card;
+
+  //   const { data } = await TaskService.updateBoard({
+  //     boardId,
+  //     board: updatedBoard,
+  //   });
+  //   const updatedListBoard = boards.map((el: any) => {
+  //     if (el.id === data.id) {
+  //       el = data;
+  //     }
+  //     return el;
+  //   });
+  //   setBoards(updatedListBoard);
+  //   setIsLoading(false);
+  // };
 
   // drag&drop cards
   const onDragEnd = async (boardId: number, cardId: number) => {
@@ -311,8 +377,8 @@ export const TaskBoard = ({ mode, theme }: any) => {
                   board={board}
                   addCard={addCardHandler}
                   removeBoard={() => removeBoardHandler(board.id)}
-                  removeCard={removeCard}
-                  updateCard={updateCard}
+                  removeCard={removeCardHandler}
+                  updateCard={updateCardHandler}
                   onDragEnd={onDragEnd}
                   onDragEnter={onDragEnter}
                   // @ts-ignore
