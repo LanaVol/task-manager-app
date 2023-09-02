@@ -248,7 +248,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       if (cardIndex === -1) return;
 
       updatedBoard.cards[cardIndex] = card;
-      console.log(updatedBoard);
       // @ts-ignore
       dispatch(updateCard({ boardId, board: updatedBoard }));
     },
@@ -289,8 +288,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // };
 
   // drag&drop cards
-  const onDragEnd = async (boardId: number, cardId: number) => {
-    setIsLoading(true);
+  const onDragEndHandler = useCallback((boardId: number, cardId: number) => {
     const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
       return el.id === boardId;
     });
@@ -313,9 +311,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
       (el: CardItem) => el.id === targetCard.cardId
     );
     if (targetCardIndex === -1) return;
-
-    const tempBoardList = [...boards];
-
+    const tempBoardList = JSON.parse(JSON.stringify(boards));
     const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
     tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
     tempBoardList[targetBoardIndex].cards.splice(
@@ -323,35 +319,72 @@ export const TaskBoard = ({ mode, theme }: any) => {
       0,
       sourceCard
     );
-
     const boardDel = tempBoardList[sourceBoardIndex];
     const boardAdded = tempBoardList[targetBoardIndex];
+  }, []);
+  // const onDragEnd = async (boardId: number, cardId: number) => {
+  //   setIsLoading(true);
+  //   const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
+  //     return el.id === boardId;
+  //   });
+  //   if (sourceBoardIndex === -1) return;
 
-    const [board1, board2] = await Promise.all([
-      TaskService.updateBoard({
-        boardId: boardDel.id,
-        board: boardDel,
-      }),
-      TaskService.updateBoard({
-        boardId: boardAdded.id,
-        board: boardAdded,
-      }),
-    ]);
+  //   const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex(
+  //     (el: CardItem) => {
+  //       return el.id === cardId;
+  //     }
+  //   );
+  //   if (sourceCardIndex === -1) return;
 
-    const updateBoardList = boards.map((board: any) => {
-      if (board.id === board1.data.id) {
-        return board1.data;
-      }
-      if (board.id === board2.data.id) {
-        return board2.data;
-      }
-      return board;
-    });
+  //   const targetBoardIndex = boards.findIndex(
+  //     (el: BoardItem) => el.id === targetCard.boardId
+  //   );
 
-    setBoards(updateBoardList);
-    setTargetCard({ boardId: 0, cardId: 0 });
-    setIsLoading(false);
-  };
+  //   if (targetBoardIndex === -1) return;
+
+  //   const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
+  //     (el: CardItem) => el.id === targetCard.cardId
+  //   );
+  //   if (targetCardIndex === -1) return;
+
+  //   const tempBoardList = [...boards];
+
+  //   const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
+  //   tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
+  //   tempBoardList[targetBoardIndex].cards.splice(
+  //     targetCardIndex,
+  //     0,
+  //     sourceCard
+  //   );
+
+  //   const boardDel = tempBoardList[sourceBoardIndex];
+  //   const boardAdded = tempBoardList[targetBoardIndex];
+
+  //   const [board1, board2] = await Promise.all([
+  //     TaskService.updateBoard({
+  //       boardId: boardDel.id,
+  //       board: boardDel,
+  //     }),
+  //     TaskService.updateBoard({
+  //       boardId: boardAdded.id,
+  //       board: boardAdded,
+  //     }),
+  //   ]);
+
+  //   const updateBoardList = boards.map((board: any) => {
+  //     if (board.id === board1.data.id) {
+  //       return board1.data;
+  //     }
+  //     if (board.id === board2.data.id) {
+  //       return board2.data;
+  //     }
+  //     return board;
+  //   });
+
+  //   setBoards(updateBoardList);
+  //   setTargetCard({ boardId: 0, cardId: 0 });
+  //   setIsLoading(false);
+  // };
 
   const onDragEnter = (boardId: number, cardId: number) => {
     if (targetCard.cardId === cardId) return;
@@ -379,7 +412,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
                   removeBoard={() => removeBoardHandler(board.id)}
                   removeCard={removeCardHandler}
                   updateCard={updateCardHandler}
-                  onDragEnd={onDragEnd}
+                  onDragEnd={onDragEndHandler}
                   onDragEnter={onDragEnter}
                   // @ts-ignore
                   updateBoardName={updateBoardNameHandler}

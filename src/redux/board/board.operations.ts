@@ -118,3 +118,21 @@ export const updateCard = createAsyncThunk(
     }
   }
 );
+
+export const onDragEnd = createAsyncThunk(
+  "boards/onDragEnd",
+  async ({ boardId, board }: any, { rejectWithValue }) => {
+    try {
+      const { data } = await TaskService.updateBoard({
+        boardId,
+        board,
+      });
+      return data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue(
+        err.message || "An error occurred with the network"
+      );
+    }
+  }
+);
