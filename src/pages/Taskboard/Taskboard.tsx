@@ -5,7 +5,7 @@ import { GridItem } from "../../components/style/GridItem/GridItem";
 import { ItemAddBoardBtn } from "../../components/style/styles/styles";
 import { Grid, Container, Box } from "@mui/material";
 import { BoardItem, CardItem } from "../../interfaces/DataTypes";
-import TaskService from "../../services/TaskService";
+// import TaskService from "../../services/TaskService";
 import { Progress } from "../../components/Progress/Progress";
 import { Error } from "../../components/Error/Error";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,13 +17,13 @@ import {
   addNewCard,
   removeCard,
   updateCard,
+  onDragEnd,
 } from "../../redux/board/board.operations";
-import { string } from "yup";
 
 export const TaskBoard = ({ mode, theme }: any) => {
-  const [isLoading222, setIsLoading] = useState(false);
-  const [error222, setError] = useState("");
-  const [boards222, setBoards] = useState<BoardItem[]>([]);
+  // const [isLoading222, setIsLoading] = useState(false);
+  // const [error222, setError] = useState("");
+  // const [boards222, setBoards] = useState<BoardItem[]>([]);
   const [targetCard, setTargetCard] = useState({
     boardId: 0,
     cardId: 0,
@@ -288,40 +288,53 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // };
 
   // drag&drop cards
-  const onDragEndHandler = useCallback((boardId: number, cardId: number) => {
-    const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
-      return el.id === boardId;
-    });
-    if (sourceBoardIndex === -1) return;
+  const onDragEndHandler = useCallback(
+    (boardId: number, cardId: number) => {
+      const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
+        return el.id === boardId;
+      });
+      if (sourceBoardIndex === -1) return;
 
-    const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex(
-      (el: CardItem) => {
-        return el.id === cardId;
-      }
-    );
-    if (sourceCardIndex === -1) return;
+      const sourceCardIndex = boards[sourceBoardIndex].cards?.findIndex(
+        (el: CardItem) => {
+          return el.id === cardId;
+        }
+      );
+      if (sourceCardIndex === -1) return;
 
-    const targetBoardIndex = boards.findIndex(
-      (el: BoardItem) => el.id === targetCard.boardId
-    );
+      const targetBoardIndex = boards.findIndex(
+        (el: BoardItem) => el.id === targetCard.boardId
+      );
 
-    if (targetBoardIndex === -1) return;
+      if (targetBoardIndex === -1) return;
 
-    const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
-      (el: CardItem) => el.id === targetCard.cardId
-    );
-    if (targetCardIndex === -1) return;
-    const tempBoardList = JSON.parse(JSON.stringify(boards));
-    const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
-    tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
-    tempBoardList[targetBoardIndex].cards.splice(
-      targetCardIndex,
-      0,
-      sourceCard
-    );
-    const boardDel = tempBoardList[sourceBoardIndex];
-    const boardAdded = tempBoardList[targetBoardIndex];
-  }, []);
+      const targetCardIndex = boards[targetBoardIndex].cards?.findIndex(
+        (el: CardItem) => el.id === targetCard.cardId
+      );
+      if (targetCardIndex === -1) return;
+      const tempBoardList = JSON.parse(JSON.stringify(boards));
+      const sourceCard = tempBoardList[sourceBoardIndex].cards[sourceCardIndex];
+      tempBoardList[sourceBoardIndex].cards.splice(sourceCardIndex, 1);
+      tempBoardList[targetBoardIndex].cards.splice(
+        targetCardIndex,
+        0,
+        sourceCard
+      );
+      const boardDel = tempBoardList[sourceBoardIndex];
+      const boardAdded = tempBoardList[targetBoardIndex];
+
+      dispatch(
+        // @ts-ignore
+        onDragEnd([
+          { boardId: boardDel.id, board: boardDel },
+          { boardId: boardAdded.id, board: boardAdded },
+        ])
+      );
+      setTargetCard({ boardId: 0, cardId: 0 });
+    },
+    [dispatch, boards, targetCard.boardId, targetCard.cardId]
+  );
+
   // const onDragEnd = async (boardId: number, cardId: number) => {
   //   setIsLoading(true);
   //   const sourceBoardIndex = boards.findIndex((el: BoardItem) => {
@@ -382,7 +395,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
   //   });
 
   //   setBoards(updateBoardList);
-  //   setTargetCard({ boardId: 0, cardId: 0 });
+  // setTargetCard({ boardId: 0, cardId: 0 });
   //   setIsLoading(false);
   // };
 
@@ -422,7 +435,7 @@ export const TaskBoard = ({ mode, theme }: any) => {
           ))}
       </Grid>
 
-      <Box sx={{}}>
+      <Box>
         <ItemAddBoardBtn>
           <CustomInput
             placeholder="Enter Board Title"

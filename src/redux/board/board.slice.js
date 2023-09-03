@@ -7,6 +7,7 @@ import {
   addNewCard,
   removeCard,
   updateCard,
+  onDragEnd,
 } from "./board.operations";
 
 const initialState = {
@@ -115,6 +116,22 @@ export const boardsSlice = createSlice({
       });
     });
     builder.addCase(updateCard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(onDragEnd.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(onDragEnd.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.boards = state.boards.map((board) => {
+        if (board.id === action.payload.data1.id) return action.payload.data1;
+        if (board.id === action.payload.data2.id) return action.payload.data2;
+        return board;
+      });
+    });
+    builder.addCase(onDragEnd.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

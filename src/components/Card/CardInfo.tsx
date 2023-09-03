@@ -71,7 +71,7 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
     setCardValues({ ...cardValues, labels: tempLabels });
   };
 
-  //--------------------- add, remove & update new task
+  //---------- add, remove & update new task
   const addTask = (value: string) => {
     const task: TaskItem = {
       id: Date.now() + Math.random() * 2,
@@ -91,12 +91,13 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
   };
 
   const checkDoneTask = (id: number, value: boolean) => {
-    const tasks = [...cardValues.tasks];
+    const tasks = JSON.parse(JSON.stringify(cardValues.tasks));
 
-    const index = tasks.findIndex((el) => {
+    const index = tasks.findIndex((el: any) => {
       return el.id === id;
     });
     if (index < 0) return;
+    console.log(tasks[index], value);
 
     tasks[index].completed = Boolean(value);
 

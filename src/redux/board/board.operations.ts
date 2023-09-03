@@ -121,13 +121,21 @@ export const updateCard = createAsyncThunk(
 
 export const onDragEnd = createAsyncThunk(
   "boards/onDragEnd",
-  async ({ boardId, board }: any, { rejectWithValue }) => {
+  async ([board1, board2]: any, { rejectWithValue }) => {
     try {
-      const { data } = await TaskService.updateBoard({
-        boardId,
-        board,
-      });
-      return data;
+      const [response1, response2] = await Promise.all([
+        TaskService.updateBoard({
+          boardId: board1.boardId,
+          board: board1.board,
+        }),
+        TaskService.updateBoard({
+          boardId: board2.boardId,
+          board: board2.board,
+        }),
+      ]);
+      console.log({ data1: response1.data, data2: response2.data });
+
+      return { data1: response1.data, data2: response2.data };
     } catch (error) {
       const err = error as AxiosError;
       return rejectWithValue(
