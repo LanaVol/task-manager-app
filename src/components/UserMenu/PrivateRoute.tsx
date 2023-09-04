@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface PrivateRouteProps {
   component: JSX.Element;
@@ -9,8 +10,10 @@ export const PrivateRoute = ({
   component: Component,
   redirectTo = "/",
 }: PrivateRouteProps) => {
+  const isAuth = useSelector((state: any) => state.auth.isLogged);
+
   const isLoggedIn = () => {
-    if (localStorage.getItem("token")) {
+    if (isAuth) {
       return true;
     } else {
       return false;

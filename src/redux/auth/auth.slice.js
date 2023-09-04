@@ -27,10 +27,27 @@ export const authSlice = createSlice({
     });
     builder.addCase(AuthOperations.singin.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isLogged = true;
+      state.accessToken = action.payload.token;
     });
     builder.addCase(AuthOperations.singin.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.isLogged = false;
+    });
+    builder.addCase(AuthOperations.singup.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(AuthOperations.singup.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isLogged = true;
+      state.accessToken = action.payload.accessToken;
+    });
+    builder.addCase(AuthOperations.singup.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.isLogged = false;
     });
   },
 });

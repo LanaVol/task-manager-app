@@ -17,14 +17,20 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Visibility, VisibilityOff } from "@mui/icons-material/";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../../services/AuthService";
+// import AuthService from "../../services/AuthService";
 import { ItemCardInfo } from "../style/styles/styles";
 import todolist from "../../image/todolist.jpeg";
+import { useDispatch, useSelector } from "react-redux";
+import { AuthOperations } from "../../redux/auth/auth.operations";
 
 export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -50,28 +56,32 @@ export const RegisterForm = () => {
     initialValues: { userName: "", email: "", password: "" },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      dispatch(
+        AuthOperations.singup({
+          userName: values.firstName,
+          email: values.email,
+          password: values.password,
+        })
+      );
       // console.log(JSON.stringify(values, null, 2));
-
-      async function fetchAuth() {
-        try {
-          setError(null);
-          setLoading(true);
-          const { data } = await AuthService.register({
-            userName: values.firstName,
-            email: values.email,
-            password: values.password,
-          });
-
-          localStorage.setItem("token", data.token);
-          navigate("/");
-          setLoading(false);
-        } catch (e) {
-          setLoading(false);
-          setError(e?.response?.data?.message || "Your network error");
-        }
-      }
-
-      fetchAuth();
+      // async function fetchAuth() {
+      //   try {
+      //     setError(null);
+      //     setLoading(true);
+      //     const { data } = await AuthService.register({
+      //       userName: values.firstName,
+      //       email: values.email,
+      //       password: values.password,
+      //     });
+      //     localStorage.setItem("token", data.token);
+      //     navigate("/");
+      //     setLoading(false);
+      //   } catch (e) {
+      //     setLoading(false);
+      //     setError(e?.response?.data?.message || "Your network error");
+      //   }
+      // }
+      // fetchAuth();
     },
   });
 
@@ -186,7 +196,7 @@ export const RegisterForm = () => {
             color="primary"
             variant="contained"
             type="submit"
-            loading={loading}
+            loading={isLoading}
             endIcon={<SendIcon />}
             loadingPosition="end"
             sx={{ padding: "12px 30px", margin: "0 auto" }}
