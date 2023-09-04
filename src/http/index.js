@@ -1,4 +1,11 @@
 import axios from "axios";
+import { AuthOperations } from "../redux/auth/auth.operations";
+import { resetRefreshAttempts } from "../redux/auth/auth.slice";
+
+let store;
+export const injectStore = (_store) => {
+  store = _store;
+};
 
 const API = axios.create({
   withCredentials: true,
@@ -6,11 +13,50 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((config) => {
-  config.headers.Authorization = localStorage.getItem("token")
-    ? `Bearer ${localStorage.getItem("token")}`
-    : " ";
-
+  const accessToken = store.getState().auth.accessToken;
+  config.headers = {
+    ...config.headers,
+    Authorization: `Bearer ${accessToken}`,
+  };
   return config;
 });
+
+API.interceptors.response.use(
+  (config) => config,
+
+  async (err) => {
+    const originalRequest = err.config;
+
+    if (err?.response?.status === 401 && err.config && !err.config._isRetry) {
+      originalRequest._isRetry = true;
+      try {
+        const refreshAttempts = store.getState().auth.refreshAttempts;
+
+        if (refreshAttempts < 1) {
+          store.dispatch({ type: "auth/incrementRefreshAttempts" });
+
+          await store.dispatch(AuthOperations.refresh());
+
+          return API(originalRequest);
+        } else {
+          store.dispatch(resetRefreshAttempts());
+          throw new Error("Authentication error");
+        }
+      } catch (error) {
+        store.dispatch(resetRefreshAttempts());
+        throw new Error("Authentication error");
+      }
+    }
+    return Promise.reject(err);
+  }
+);
+
+// API.interceptors.request.use((config) => {
+//   config.headers.Authorization = localStorage.getItem("token")
+//     ? `Bearer ${localStorage.getItem("token")}`
+//     : " ";
+
+//   return config;
+// });
 
 export default API;
