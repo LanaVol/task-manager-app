@@ -8,7 +8,6 @@ export class AuthOperations {
     async ({ email, password }: any, { rejectWithValue }) => {
       try {
         const { data } = await AuthService.login({ email, password });
-        console.log("data", data);
         return data;
       } catch (error) {
         const err = error as AxiosError;
@@ -27,7 +26,6 @@ export class AuthOperations {
           email,
           password,
         });
-        console.log("data", data);
         return data;
       } catch (error) {
         const err = error as AxiosError;
@@ -42,7 +40,6 @@ export class AuthOperations {
     async (_, { rejectWithValue }) => {
       try {
         const { data } = await AuthService.logout();
-        console.log("logout", data);
         return data;
       } catch (error) {
         const err = error as AxiosError;

@@ -97,7 +97,6 @@ export const CardInfo: React.FC<CardInfoProps> = (props: CardInfoProps) => {
       return el.id === id;
     });
     if (index < 0) return;
-    console.log(tasks[index], value);
 
     tasks[index].completed = Boolean(value);
 

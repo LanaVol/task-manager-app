@@ -10,7 +10,6 @@ export const PrivateRoute = ({
   component: Component,
   redirectTo = "/",
 }: PrivateRouteProps) => {
-  console.log(redirectTo);
   const isAuth = useSelector((state: any) => state.auth.isLogged);
 
   return isAuth ? Component : <Navigate to={redirectTo} />;
