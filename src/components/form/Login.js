@@ -17,7 +17,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Visibility, VisibilityOff } from "@mui/icons-material/";
 import { Link, useNavigate } from "react-router-dom";
-// import AuthService from "../../services/AuthService";
 import { ItemCardInfo } from "../style/styles/styles";
 import todolist from "../../image/todolist.jpeg";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,8 +24,6 @@ import { AuthOperations } from "../../redux/auth/auth.operations";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  // const [error, setError] = useState("");
-  // const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
   const isLoading = useSelector((state) => state.auth.isLoading);
@@ -59,24 +56,7 @@ export const LoginForm = () => {
           password: values.password,
         })
       );
-      // console.log(JSON.stringify(values, null, 2));
-      // async function fetchLogin() {
-      //   try {
-      //     setError(null);
-      //     setLoading(true);
-      //     const { data } = await AuthService.login({
-      //       email: values.email,
-      //       password: values.password,
-      //     });
-      //     localStorage.setItem("token", data.token);
-      //     navigate("/");
-      //     setLoading(false);
-      //   } catch (e) {
-      //     setLoading(false);
-      //     setError(e?.response?.data?.message || "Your network error");
-      //   }
-      // }
-      // fetchLogin();
+      navigate("/");
     },
   });
   return (

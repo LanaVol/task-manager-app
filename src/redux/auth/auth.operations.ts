@@ -37,6 +37,21 @@ export class AuthOperations {
       }
     }
   );
+  static logout = createAsyncThunk(
+    "auth/logout",
+    async (_, { rejectWithValue }) => {
+      try {
+        const { data } = await AuthService.logout();
+        console.log("logout", data);
+        return data;
+      } catch (error) {
+        const err = error as AxiosError;
+        return rejectWithValue(
+          err.message || "An error occurred with the network"
+        );
+      }
+    }
+  );
   static refresh = createAsyncThunk(
     "auth/refresh",
     async (_, { rejectWithValue }) => {

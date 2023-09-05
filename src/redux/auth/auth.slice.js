@@ -49,6 +49,21 @@ export const authSlice = createSlice({
       state.error = action.payload;
       state.isLogged = false;
     });
+    builder.addCase(AuthOperations.logout.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(AuthOperations.logout.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isLogged = false;
+      state.accessToken = null;
+    });
+    builder.addCase(AuthOperations.logout.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.isLogged = false;
+      state.accessToken = null;
+    });
   },
 });
 

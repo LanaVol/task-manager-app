@@ -8,6 +8,9 @@ class AuthService {
   static register({ userName, email, password }) {
     return API.post("/auth/register", { userName, email, password });
   }
+  static async logout() {
+    return API.get("/auth/logout");
+  }
 
   static refresh() {
     return API.get("/auth/refresh", { withCredentials: true });

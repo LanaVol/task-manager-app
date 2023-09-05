@@ -7,7 +7,7 @@ import {
   Container,
   IconButton,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { BurgerMenu } from "./Burger";
@@ -17,7 +17,7 @@ import { LogOut } from "./LogOut";
 type Anchor = "left";
 
 export const Header = ({ mode, setMode }: any) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const matches = useMediaQuery("(max-width:600px)");
   const [burgerMenu, setBurgerMenu] = useState(false);
   const [stateBurger, setStateBurger] = useState({
@@ -29,11 +29,6 @@ export const Header = ({ mode, setMode }: any) => {
       setBurgerMenu(false);
     }
   }, [matches]);
-
-  const logOut = () => {
-    localStorage.setItem("token", "");
-    navigate("/auth");
-  };
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -74,7 +69,6 @@ export const Header = ({ mode, setMode }: any) => {
                 matches={matches}
                 stateBurger={stateBurger}
                 toggleDrawer={toggleDrawer}
-                logOut={logOut}
                 mode={mode}
                 setMode={setMode}
               />
@@ -89,7 +83,7 @@ export const Header = ({ mode, setMode }: any) => {
               Task Manager App
             </Typography>
 
-            {matches ? "" : <LogOut logOut={logOut} />}
+            {matches ? "" : <LogOut />}
 
             {matches ? (
               ""

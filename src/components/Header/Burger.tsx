@@ -24,7 +24,6 @@ interface BurgerMenuProps {
     anchor: Anchor,
     open: boolean
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
-  logOut: () => void;
   mode: "light" | "dark";
   setMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
 }
@@ -34,7 +33,6 @@ export const BurgerMenu = ({
   matches,
   stateBurger,
   toggleDrawer,
-  logOut,
   mode,
   setMode,
 }: BurgerMenuProps) => {
@@ -47,7 +45,7 @@ export const BurgerMenu = ({
     >
       <List>
         {[
-          <LogOut logOut={logOut} />,
+          <LogOut />,
           <Mode mode={mode} setMode={setMode} matches={matches} />,
         ].map((el, index) => (
           <ListItem key={index} disablePadding>
