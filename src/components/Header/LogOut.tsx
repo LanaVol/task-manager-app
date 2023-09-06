@@ -2,12 +2,12 @@ import { Box, Button } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthOperations } from "../../redux/auth/auth.operations";
+import { AppDispatch } from "../../redux/store";
 
 export const LogOut = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const isLogged = useSelector((state: any) => state.auth.isLogged);
   const handleLogOut = () => {
-    // @ts-ignore
     dispatch(AuthOperations.logout());
   };
 

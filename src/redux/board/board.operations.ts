@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 export const fetchBoards = createAsyncThunk(
   "boards/fetchBoards",
-  async (_: any, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const { data } = await TaskService.getBoards();
       return data;
@@ -133,7 +133,6 @@ export const onDragEnd = createAsyncThunk(
           board: board2.board,
         }),
       ]);
-      console.log({ data1: response1.data, data2: response2.data });
 
       return { data1: response1.data, data2: response2.data };
     } catch (error) {

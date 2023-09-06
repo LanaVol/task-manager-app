@@ -22,7 +22,7 @@ interface BoardProps {
   updateCard: (boardId: number, cardId: number, card: CardItem) => void;
   onDragEnd: (boardId: number, cardId: number) => void;
   onDragEnter: (boardId: number, cardId: number) => void;
-  updateBoardName: (boardId: number, value: string) => Promise<void>;
+  updateBoardName: (boardId: number, value: string) => void;
 }
 
 export const Board: React.FC<BoardProps> = (props: BoardProps) => {

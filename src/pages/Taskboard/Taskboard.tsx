@@ -18,20 +18,20 @@ import {
   updateCard,
   onDragEnd,
 } from "../../redux/board/board.operations";
+import { AppDispatch } from "../../redux/store";
 
-export const TaskBoard = ({ mode, theme }: any) => {
+export const TaskBoard = (): JSX.Element => {
   const [targetCard, setTargetCard] = useState({
     boardId: 0,
     cardId: 0,
   });
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const boards = useSelector((state: any) => state.boards.boards);
   const isLoading = useSelector((state: any) => state.boards.isLoading);
   const error = useSelector((state: any) => state.boards.error);
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(fetchBoards());
   }, [dispatch]);
 
@@ -42,7 +42,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
         title: boardTitle,
         cards: [],
       };
-      // @ts-ignore
       dispatch(addNewBoard(newBoard));
     },
     [dispatch]
@@ -56,7 +55,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       const updatedBoard = { ...boards[boardIndex] };
       updatedBoard.title = value;
       console.log(boardId, updatedBoard);
-      // @ts-ignore
       dispatch(updateBoardTitle({ boardId, board: updatedBoard }));
     },
     [dispatch, boards]
@@ -65,7 +63,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
   // remove current board
   const removeBoardHandler = useCallback(
     (boardId: number) => {
-      // @ts-ignore
       dispatch(removeBoard(boardId));
     },
     [dispatch]
@@ -86,7 +83,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
         tasks: [],
       });
 
-      // @ts-ignore
       dispatch(addNewCard({ boardId, board: tempBoardList[boardIndex] }));
     },
     [dispatch, boards]
@@ -103,7 +99,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       updatedBoard.cards = updatedBoard.cards.filter(
         (card: any) => card.id !== cardId
       );
-      // @ts-ignore
       dispatch(removeCard({ boardId, board: updatedBoard }));
     },
     [dispatch, boards]
@@ -125,7 +120,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       if (cardIndex === -1) return;
 
       updatedBoard.cards[cardIndex] = card;
-      // @ts-ignore
       dispatch(updateCard({ boardId, board: updatedBoard }));
     },
     [dispatch, boards]
@@ -168,7 +162,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
       const boardAdded = tempBoardList[targetBoardIndex];
 
       dispatch(
-        // @ts-ignore
         onDragEnd([
           { boardId: boardDel.id, board: boardDel },
           { boardId: boardAdded.id, board: boardAdded },
@@ -207,7 +200,6 @@ export const TaskBoard = ({ mode, theme }: any) => {
                   updateCard={updateCardHandler}
                   onDragEnd={onDragEndHandler}
                   onDragEnter={onDragEnter}
-                  // @ts-ignore
                   updateBoardName={updateBoardNameHandler}
                 />
               </GridItem>

@@ -1,10 +1,10 @@
-export interface BoardItem{
+export interface BoardItem {
   id: number;
   title: string;
   cards: CardItem[];
 }
 
-export interface CardItem{
+export interface CardItem {
   id: number;
   title: string;
   labels: LabelItem[];
@@ -13,13 +13,27 @@ export interface CardItem{
   desc?: string;
 }
 
-export interface TaskItem{
+export interface TaskItem {
   id: number;
   completed: boolean;
   text: string;
 }
 
-export interface LabelItem{
+export interface LabelItem {
   color: string;
   text: string;
+}
+
+export interface IAuthDataResponse {
+  token: string;
+}
+
+export interface IBoardDataResponse {
+  "0": AllBoards;
+}
+
+export interface AllBoards {
+  id: string;
+  userId: string;
+  boards: BoardItem[];
 }
